@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 
 import c from './TodoItem.module.css'
 
-const TodoItem = ({id, text, status, onRemoveTodo, onChangeTodoStatus, statusesList}) => {
+const TodoItem = React.memo(({id, text, status, onRemoveTodo, onChangeTodoStatus, statusesList}) => {
+    console.log('render')
     const [editStatusMode, setEditStatusMode] = useState(false)
 
     const onDoubleClickHandler = () => {
@@ -14,8 +15,7 @@ const TodoItem = ({id, text, status, onRemoveTodo, onChangeTodoStatus, statusesL
         setEditStatusMode(false)
     }
 
-    const currentStatus = statusesList.find(s => s.id === status)
-    const currentStatusColor = currentStatus.color
+    const currentStatusColor = statusesList.find(s => s.id === status).color
 
     return (
         <li className={c.listItem}>
@@ -38,6 +38,6 @@ const TodoItem = ({id, text, status, onRemoveTodo, onChangeTodoStatus, statusesL
             <button className={c.deleteBtn} onClick={() => onRemoveTodo(id)}>delete</button>
         </li>
     );
-};
+});
 
 export default TodoItem;

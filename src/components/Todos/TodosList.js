@@ -4,6 +4,8 @@ import {todosActions} from "../../store/slices/todosSlice";
 
 import TodoItem from "./TodoItem/TodoItem";
 
+import s from './TodosList.module.css'
+
 
 const TodosList = () => {
     const [text, setText] = useState('')
@@ -36,24 +38,24 @@ const TodosList = () => {
         dispatch(todosActions.changeStatus({id, status}))
     }
 
+    const todosList = todos.map(t => <TodoItem
+        key={t.id}
+        id={t.id}
+        status={t.status}
+        text={t.text}
+        onRemoveTodo={onRemoveTodoHandler}
+        onChangeTodoStatus={onChangeTodoStatusHandler}
+        statusesList={statusesList}
+    />)
+
 
     return (
         <>
             <input value={text} onChange={onTextChangeHandler} type="text"/>
             <button onClick={onAddTodoHandler}>Добавить</button>
-
-            <ul>
-                {todos.map(t => <TodoItem
-                    key={t.id}
-                    id={t.id}
-                    status={t.status}
-                    text={t.text}
-                    onRemoveTodo={onRemoveTodoHandler}
-                    onChangeTodoStatus={onChangeTodoStatusHandler}
-                    statusesList={statusesList}
-                />)}
+            <ul className={s.todoList}>
+                {todosList}
             </ul>
-
         </>
     );
 };
