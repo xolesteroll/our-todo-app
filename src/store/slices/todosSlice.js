@@ -15,6 +15,11 @@ const initialState = {
             text: 'Some text fot t3 todo',
             status: 'active'
         },
+    ],
+    statuses: [
+        'active',
+        'done',
+        'hold'
     ]
 }
 
@@ -23,16 +28,20 @@ const todosSlice = createSlice({
     initialState,
     reducers: {
         addTodo(state, action) {
-            return state.todos.concat(action.payload)
+            state.todos.push(action.payload)
         },
-        removeTodo(state, id) {
-            return state.todos.filter(t => t.id !== id)
+        removeTodo(state, {payload}) {
+            state.todos = state.todos.filter(t => t.id !== payload.id)
         },
-        changeStatus(state, action) {
-            const todo = state.todos.find(t => t.id === action.id)
-            todo.status = action.status
+        changeStatus(state, {payload}) {
+            const todo = state.todos.find(t => t.id === payload.id)
+            todo.status = payload.status
         }
     }
 })
 
-export default todosSlice
+export const todosActions = todosSlice.actions
+
+const todosReducer = todosSlice.reducer
+
+export default todosReducer

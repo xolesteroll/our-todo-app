@@ -1,0 +1,18 @@
+.listItem {
+    position: relative;
+}
+
+.listItem:hover .deleteBtn{
+    display: block;
+}
+
+.deleteBtn {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    width: fit-content;
+    height: 80%;
+    background: red;
+}
