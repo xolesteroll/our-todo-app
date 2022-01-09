@@ -18,7 +18,6 @@ const TodosList = () => {
 
     const onTextChangeHandler = (e) => {
         const text = e.target.value
-
         setText(text)
     }
 
