@@ -5,7 +5,7 @@ import {todosActions} from "../../store/slices/todosSlice";
 import TodoItem from "./TodoItem/TodoItem";
 
 
-const TodosList = (props) => {
+const TodosList = () => {
     const [text, setText] = useState('')
     const dispatch = useDispatch()
 

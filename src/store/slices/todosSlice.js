@@ -17,9 +17,21 @@ const initialState = {
         },
     ],
     statuses: [
-        'active',
-        'done',
-        'hold'
+        {
+            id: 'active',
+            label: 'active',
+            color: 'green'
+        },
+        {
+            id: 'done',
+            label: 'done',
+            color: 'blue'
+        },
+        {
+            id: 'hold',
+            label: 'hold',
+            color: 'grey'
+        }
     ]
 }
 
@@ -32,6 +44,7 @@ const todosSlice = createSlice({
         },
         removeTodo(state, {payload}) {
             state.todos = state.todos.filter(t => t.id !== payload.id)
+            console.log(state.todos)
         },
         changeStatus(state, {payload}) {
             const todo = state.todos.find(t => t.id === payload.id)

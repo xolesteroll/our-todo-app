@@ -14,15 +14,25 @@ const TodoItem = ({id, text, status, onRemoveTodo, onChangeTodoStatus, statusesL
         setEditStatusMode(false)
     }
 
+    const currentStatus = statusesList.find(s => s.id === status)
+    const currentStatusColor = currentStatus.color
+
     return (
-        <li className={c.listItem} >
+        <li className={c.listItem}>
             <p>{text}</p>
             <div onDoubleClick={onDoubleClickHandler}>
-                {!editStatusMode && <p>{status}</p>}
+                {!editStatusMode && <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>{status}</span>}
                 {editStatusMode &&
-                    <div>
-                        {statusesList.map(s => <button onClick={() => changeTodoStatus(s)} key={s}>{s}</button>)}
-                    </div>
+                <div className={c.statusControls}>
+                    {statusesList.map(s => <button
+                        className={c.statusBtn}
+                        style={{backgroundColor: s.color}}
+                        onClick={() => changeTodoStatus(s.id)}
+                        key={s.id}
+                    >
+                        {s.label}
+                    </button>)}
+                </div>
                 }
             </div>
             <button className={c.deleteBtn} onClick={() => onRemoveTodo(id)}>delete</button>
