@@ -40,18 +40,19 @@ const TodosList = ({statusFilter}) => {
         dispatch(todosActions.changeStatus({id, status}))
     }
 
-    const todosList = todos.map(t => <TodoItem
-        key={t.id}
-        id={t.id}
-        deleted={statusFilter === 'deleted'}
-        status={t.status}
-        title={t.title}
-        description={t.description}
-        onRemoveTodo={onRemoveTodoHandler}
-        onRestoreTodo={onRestoreTodoHandler}
-        onChangeTodoStatus={onChangeTodoStatusHandler}
-        statusesList={statusesList}
-    />)
+    const todosList = todos.length > 0 ? todos.map(t => <TodoItem
+            key={t.id}
+            id={t.id}
+            deleted={statusFilter === 'deleted'}
+            status={t.status}
+            title={t.title}
+            description={t.description}
+            onRemoveTodo={onRemoveTodoHandler}
+            onRestoreTodo={onRestoreTodoHandler}
+            onChangeTodoStatus={onChangeTodoStatusHandler}
+            statusesList={statusesList}
+        />) :
+        <p>No <span>{statusFilter !== 'all' ? statusFilter : ''}</span> Todos</p>
 
 
     return (
