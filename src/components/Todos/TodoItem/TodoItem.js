@@ -36,22 +36,22 @@ const TodoItem = React.memo(({
         <li className={c.listItem}>
             <h3>{title}</h3>
             <p>{description}</p>
-            {!deleted && <div onDoubleClick={onDoubleClickHandler}>
+            <div onDoubleClick={!deleted ? onDoubleClickHandler : null}>
                 {!editStatusMode &&
                 <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>{status}</span>}
                 {editStatusMode &&
                 <div className={c.statusControls}>
-                    {statusesList.map(s => s.id !== 'deleted' ? <button
+                    {statusesList.map(s => <button
                         className={c.statusBtn}
                         style={{backgroundColor: s.color}}
                         onClick={() => changeTodoStatus(s.id)}
                         key={s.id}
                     >
                         {s.id}
-                    </button> : null)}
+                    </button>)}
                 </div>
                 }
-            </div>}
+            </div>
             {actionBtn}
         </li>
     );
