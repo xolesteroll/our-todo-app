@@ -19,6 +19,7 @@ const initialState = {
             status: 'active'
         },
     ],
+    deletedTodos: [],
     statuses: [
         {
             id: 'active',
@@ -34,11 +35,6 @@ const initialState = {
             id: 'hold',
             label: 'Hold',
             color: 'grey'
-        },
-        {
-            id: 'deleted',
-            label: 'Deleted',
-            color: 'red'
         }
     ]
 }
@@ -52,11 +48,13 @@ const todosSlice = createSlice({
         },
         removeTodo(state, {payload}) {
             const todo = state.todos.find(t => t.id === payload.id)
-            todo.status = 'deleted'
+            state.deletedTodos.push(todo)
+            state.todos = state.todos.filter(t => t.id !== payload.id)
         },
         restoreTodo(state, {payload}) {
-            const todo = state.todos.find(t => t.id === payload.id)
-            todo.status = 'active'
+            const todo = state.deletedTodos.find(t => t.id === payload.id)
+            state.todos.push(todo)
+            state.deletedTodos = state.deletedTodos.filter(t => t.id !== payload.id)
         },
         changeStatus(state, {payload}) {
             const todo = state.todos.find(t => t.id === payload.id)

@@ -25,6 +25,7 @@ const Tabs = () => {
                         {h.label}
                     </li>
                 )}
+                <li className={c.tabsNavItem} onClick={() => onNavButtonClickHandler('deleted')}>Deleted</li>
             </ul>
             <div className={c.tabsContent}>
                 <TodosList statusFilter={activeStatus}/>

@@ -6,6 +6,7 @@ const TodoItem = React.memo(({
                                  id,
                                  title,
                                  description,
+                                 deleted,
                                  status,
                                  onRemoveTodo,
                                  onRestoreTodo,
@@ -26,7 +27,7 @@ const TodoItem = React.memo(({
 
     const currentStatusColor = statusesList.find(s => s.id === status).color
 
-    const actionBtn = status !== 'deleted' ?
+    const actionBtn = !deleted ?
         <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={() => onRemoveTodo(id)}>delete</button> :
         <button className={`${c.actionBtn} ${c.restoreBtn}`} onClick={() => onRestoreTodo(id)}>restore</button>
 
@@ -35,7 +36,7 @@ const TodoItem = React.memo(({
         <li className={c.listItem}>
             <h3>{title}</h3>
             <p>{description}</p>
-            <div onDoubleClick={onDoubleClickHandler}>
+            {!deleted && <div onDoubleClick={onDoubleClickHandler}>
                 {!editStatusMode &&
                 <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>{status}</span>}
                 {editStatusMode &&
@@ -50,7 +51,7 @@ const TodoItem = React.memo(({
                     </button> : null)}
                 </div>
                 }
-            </div>
+            </div>}
             {actionBtn}
         </li>
     );

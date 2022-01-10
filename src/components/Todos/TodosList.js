@@ -12,9 +12,19 @@ const TodosList = ({statusFilter}) => {
 
     const todosState = useSelector(state => state.todos)
 
-    const todos = statusFilter !== 'all' ?
-        todosState.todos.filter(t => t.status === statusFilter) :
-        todosState.todos.filter(t => t.status !== 'deleted')
+    let todos
+
+    if (statusFilter !== 'all' && statusFilter !== 'deleted') {
+        todos = todosState.todos.filter(t => t.status === statusFilter)
+    }
+
+    if (statusFilter === 'all') {
+        todos = todosState.todos
+    }
+
+    if (statusFilter === 'deleted') {
+        todos = todosState.deletedTodos
+    }
 
     const statusesList = todosState.statuses
 
@@ -33,6 +43,7 @@ const TodosList = ({statusFilter}) => {
     const todosList = todos.map(t => <TodoItem
         key={t.id}
         id={t.id}
+        deleted={statusFilter === 'deleted'}
         status={t.status}
         title={t.title}
         description={t.description}
