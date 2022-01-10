@@ -1,12 +1,12 @@
 import React from "react";
 
-import TodosList from "./components/Todos/TodosList";
 import Layout from "./components/UI/Layout/Layout";
+import Tabs from "./components/Tabs/Tabs";
 
 function App() {
-  return <Layout>
-    <TodosList />
-  </Layout>;
+    return <Layout>
+        <Tabs/>
+    </Layout>;
 }
 
 export default App;

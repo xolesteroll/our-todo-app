@@ -1,0 +1,33 @@
+.header {
+    padding: 10px;
+    background-color: black;
+}
+
+.headerInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerLogo {
+    max-width: 100px;
+}
+
+.headerLogo img {
+    max-width: 100%;
+}
+
+.headerNav {
+    max-width: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 10px;
+}
+
+.headerNavLink {
+    color: #ffffff;
+    text-decoration: none;
+
+}
+

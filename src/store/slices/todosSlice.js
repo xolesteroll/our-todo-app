@@ -19,17 +19,17 @@ const initialState = {
     statuses: [
         {
             id: 'active',
-            label: 'active',
+            label: 'Active',
             color: 'green'
         },
         {
             id: 'done',
-            label: 'done',
+            label: 'Done',
             color: 'blue'
         },
         {
             id: 'hold',
-            label: 'hold',
+            label: 'Hold',
             color: 'grey'
         }
     ]

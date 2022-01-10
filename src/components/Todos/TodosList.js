@@ -7,12 +7,18 @@ import TodoItem from "./TodoItem/TodoItem";
 import s from './TodosList.module.css'
 
 
-const TodosList = () => {
+const TodosList = ({statusFilter}) => {
     const [text, setText] = useState('')
     const dispatch = useDispatch()
 
 
-    const todos = useSelector(state => state.todos.todos)
+    const todos = useSelector(state => {
+        if (statusFilter !== 'all') {
+            return state.todos.todos.filter(t => t.status === statusFilter)
+        }
+
+        return state.todos.todos
+    })
     const statusesList = useSelector(state => state.todos.statuses)
 
 

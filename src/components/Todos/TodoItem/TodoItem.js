@@ -30,7 +30,7 @@ const TodoItem = React.memo(({id, text, status, onRemoveTodo, onChangeTodoStatus
                         onClick={() => changeTodoStatus(s.id)}
                         key={s.id}
                     >
-                        {s.label}
+                        {s.id}
                     </button>)}
                 </div>
                 }
