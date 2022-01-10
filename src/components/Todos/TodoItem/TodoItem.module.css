@@ -4,29 +4,39 @@
     margin-bottom: 10px;
 }
 
-.listItem:hover .deleteBtn{
+.listItem:hover .actionBtn{
     display: block;
 }
 
-.deleteBtn {
+.actionBtn {
     display: none;
     position: absolute;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    color: #ffffff;
     top: 50%;
     right: 5px;
     transform: translateY(-50%);
     width: fit-content;
     height: 80%;
-    background: red;
-    cursor: pointer;
+}
+
+.actionBtn.restoreBtn {
+    background-color: green;
+}
+
+.actionBtn.deleteBtn {
+    background-color: red;
 }
 
 .statusControls {
     display: flex;
     column-gap: 3px;
 }
-.deleteBtn,
-.statusBtn,
-.statusBar{
+
+.statusBar,
+.statusBtn{
     cursor: pointer;
     border: none;
     border-radius: 2px;

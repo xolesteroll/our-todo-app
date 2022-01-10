@@ -2,8 +2,17 @@ import React, {useState} from 'react';
 
 import c from './TodoItem.module.css'
 
-const TodoItem = React.memo(({id, text, status, onRemoveTodo, onChangeTodoStatus, statusesList}) => {
-    console.log('render')
+const TodoItem = React.memo(({
+                                 id,
+                                 title,
+                                 description,
+                                 status,
+                                 onRemoveTodo,
+                                 onRestoreTodo,
+                                 onChangeTodoStatus,
+                                 statusesList
+                             }) => {
+
     const [editStatusMode, setEditStatusMode] = useState(false)
 
     const onDoubleClickHandler = () => {
@@ -17,25 +26,32 @@ const TodoItem = React.memo(({id, text, status, onRemoveTodo, onChangeTodoStatus
 
     const currentStatusColor = statusesList.find(s => s.id === status).color
 
+    const actionBtn = status !== 'deleted' ?
+        <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={() => onRemoveTodo(id)}>delete</button> :
+        <button className={`${c.actionBtn} ${c.restoreBtn}`} onClick={() => onRestoreTodo(id)}>restore</button>
+
+
     return (
         <li className={c.listItem}>
-            <p>{text}</p>
+            <h3>{title}</h3>
+            <p>{description}</p>
             <div onDoubleClick={onDoubleClickHandler}>
-                {!editStatusMode && <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>{status}</span>}
+                {!editStatusMode &&
+                <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>{status}</span>}
                 {editStatusMode &&
                 <div className={c.statusControls}>
-                    {statusesList.map(s => <button
+                    {statusesList.map(s => s.id !== 'deleted' ? <button
                         className={c.statusBtn}
                         style={{backgroundColor: s.color}}
                         onClick={() => changeTodoStatus(s.id)}
                         key={s.id}
                     >
                         {s.id}
-                    </button>)}
+                    </button> : null)}
                 </div>
                 }
             </div>
-            <button className={c.deleteBtn} onClick={() => onRemoveTodo(id)}>delete</button>
+            {actionBtn}
         </li>
     );
 });

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {todosActions} from "../../store/slices/todosSlice";
 
@@ -8,35 +8,22 @@ import s from './TodosList.module.css'
 
 
 const TodosList = ({statusFilter}) => {
-    const [text, setText] = useState('')
     const dispatch = useDispatch()
 
+    const todosState = useSelector(state => state.todos)
 
-    const todos = useSelector(state => {
-        if (statusFilter !== 'all') {
-            return state.todos.todos.filter(t => t.status === statusFilter)
-        }
+    const todos = statusFilter !== 'all' ?
+        todosState.todos.filter(t => t.status === statusFilter) :
+        todosState.todos.filter(t => t.status !== 'deleted')
 
-        return state.todos.todos
-    })
-    const statusesList = useSelector(state => state.todos.statuses)
-
-
-    const onTextChangeHandler = (e) => {
-        const text = e.target.value
-        setText(text)
-    }
-
-    const onAddTodoHandler = () => {
-        dispatch(todosActions.addTodo({
-            id: Math.random().toString(),
-            text,
-            status: 'active'
-        }))
-    }
+    const statusesList = todosState.statuses
 
     const onRemoveTodoHandler = (id) => {
         dispatch(todosActions.removeTodo({id}))
+    }
+
+    const onRestoreTodoHandler = (id) => {
+        dispatch(todosActions.restoreTodo({id}))
     }
 
     const onChangeTodoStatusHandler = (id, status) => {
@@ -47,8 +34,10 @@ const TodosList = ({statusFilter}) => {
         key={t.id}
         id={t.id}
         status={t.status}
-        text={t.text}
+        title={t.title}
+        description={t.description}
         onRemoveTodo={onRemoveTodoHandler}
+        onRestoreTodo={onRestoreTodoHandler}
         onChangeTodoStatus={onChangeTodoStatusHandler}
         statusesList={statusesList}
     />)
@@ -56,8 +45,6 @@ const TodosList = ({statusFilter}) => {
 
     return (
         <>
-            <input value={text} onChange={onTextChangeHandler} type="text"/>
-            <button onClick={onAddTodoHandler}>Добавить</button>
             <ul className={s.todoList}>
                 {todosList}
             </ul>

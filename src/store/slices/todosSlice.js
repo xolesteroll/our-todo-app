@@ -4,15 +4,18 @@ const initialState = {
     todos: [
         {
             id: 't1',
-            text: 'Some text fot t1 todo',
+            title: 'Some text fot t1 todo',
+            description: 'Some description',
             status: 'active'
         },{
             id: 't2',
-            text: 'Some text fot t2 todo',
+            title: 'Some text fot t2 todo',
+            description: 'Some description',
             status: 'active'
         },{
             id: 't3',
-            text: 'Some text fot t3 todo',
+            title: 'Some text fot t3 todo',
+            description: 'Some description',
             status: 'active'
         },
     ],
@@ -31,6 +34,11 @@ const initialState = {
             id: 'hold',
             label: 'Hold',
             color: 'grey'
+        },
+        {
+            id: 'deleted',
+            label: 'Deleted',
+            color: 'red'
         }
     ]
 }
@@ -43,8 +51,12 @@ const todosSlice = createSlice({
             state.todos.push(action.payload)
         },
         removeTodo(state, {payload}) {
-            state.todos = state.todos.filter(t => t.id !== payload.id)
-            console.log(state.todos)
+            const todo = state.todos.find(t => t.id === payload.id)
+            todo.status = 'deleted'
+        },
+        restoreTodo(state, {payload}) {
+            const todo = state.todos.find(t => t.id === payload.id)
+            todo.status = 'active'
         },
         changeStatus(state, {payload}) {
             const todo = state.todos.find(t => t.id === payload.id)
