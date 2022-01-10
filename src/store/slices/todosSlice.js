@@ -2,22 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     todos: [
-        {
-            id: 't1',
-            title: 'Some text fot t1 todo',
-            description: 'Some description',
-            status: 'active'
-        },{
-            id: 't2',
-            title: 'Some text fot t2 todo',
-            description: 'Some description',
-            status: 'active'
-        },{
-            id: 't3',
-            title: 'Some text fot t3 todo',
-            description: 'Some description',
-            status: 'active'
-        },
+
     ],
     deletedTodos: [],
     statuses: [

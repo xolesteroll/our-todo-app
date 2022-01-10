@@ -5,6 +5,7 @@ import {todosActions} from "../../store/slices/todosSlice";
 import TodoItem from "./TodoItem/TodoItem";
 
 import s from './TodosList.module.css'
+import {Link} from "react-router-dom";
 
 
 const TodosList = ({statusFilter}) => {
@@ -52,7 +53,7 @@ const TodosList = ({statusFilter}) => {
             onChangeTodoStatus={onChangeTodoStatusHandler}
             statusesList={statusesList}
         />) :
-        <p>No <span>{statusFilter !== 'all' ? statusFilter : ''}</span> Todos</p>
+        <p>No <span>{statusFilter !== 'all' ? statusFilter : ''}</span> Todos yet, try <Link to="/add-new">adding</Link> one</p>
 
 
     return (
