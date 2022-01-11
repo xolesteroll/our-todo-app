@@ -1,9 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-    todos: [
-
-    ],
+    todos: [],
     deletedTodos: [],
     statuses: [
         {
