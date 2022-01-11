@@ -16,7 +16,7 @@ const authSlice = createSlice({
             state.token = payload.token
             state.id = payload.id
             state.isAuth = true
-
+            console.log(state.id)
         },
         logout(state) {
             state.email = null

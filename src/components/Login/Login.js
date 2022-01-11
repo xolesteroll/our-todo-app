@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import {authActions} from "../../store/slices/authSlice";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
         const [emailValue, setEmailValue] = useState('')
         const [passwordValue, setPasswordValue] = useState('')
         const [isLogin, setIsLogin] = useState(false)
+
+        const dispatch = useDispatch()
+        const navigate = useNavigate()
 
         const {login, logout} = authActions
 
@@ -43,7 +48,12 @@ const Login = () => {
                 }
             })
             const data = await response.json()
-
+            dispatch(login({
+                id: data.localId,
+                email: data.email,
+                token: data.idToken
+            }))
+            navigate('/')
         }
 
 
