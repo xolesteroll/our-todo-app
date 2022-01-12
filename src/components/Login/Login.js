@@ -11,7 +11,7 @@ const Login = () => {
         const dispatch = useDispatch()
         const navigate = useNavigate()
 
-        const {login, logout} = authActions
+        const {login} = authActions
 
         const onChangeEmailValueHandler = (e) => {
             const emailText = e.target.value

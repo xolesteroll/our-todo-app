@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {todosActions} from "../../store/slices/todosSlice";
 
@@ -6,12 +6,17 @@ import TodoItem from "./TodoItem/TodoItem";
 
 import s from './TodosList.module.css'
 import {Link} from "react-router-dom";
+import {changeTodoStatus, fetchTodos} from "../../store/thunks/todoThunks";
 
 
 const TodosList = ({statusFilter}) => {
     const dispatch = useDispatch()
 
     const todosState = useSelector(state => state.todos)
+
+    useEffect(() => {
+        dispatch(fetchTodos())
+    }, [])
 
     let todos
 
@@ -38,7 +43,11 @@ const TodosList = ({statusFilter}) => {
     }
 
     const onChangeTodoStatusHandler = (id, status) => {
-        dispatch(todosActions.changeStatus({id, status}))
+        const dataObj = {
+            id,
+            status
+        }
+        dispatch(changeTodoStatus(dataObj))
     }
 
     const todosList = todos.length > 0 ? todos.map(t => <TodoItem
@@ -53,7 +62,8 @@ const TodosList = ({statusFilter}) => {
             onChangeTodoStatus={onChangeTodoStatusHandler}
             statusesList={statusesList}
         />) :
-        <p>No <span>{statusFilter !== 'all' ? statusFilter : ''}</span> Todos yet, try <Link to="/add-new">adding</Link> one</p>
+        <p>No <span>{statusFilter !== 'all' ? statusFilter : ''}</span> Todos yet, try <Link
+            to="/add-new">adding</Link> one</p>
 
 
     return (

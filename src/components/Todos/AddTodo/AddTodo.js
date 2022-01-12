@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {todosActions} from "../../../store/slices/todosSlice";
 import {useDispatch} from "react-redux";
 
 import c from "./AddTodo.module.css"
+import {addTodo} from "../../../store/thunks/todoThunks";
 
 const AddTodo = () => {
     const [title, setText] = useState('')
@@ -24,8 +24,7 @@ const AddTodo = () => {
     const onAddTodoHandler = (e) => {
         e.preventDefault()
 
-        dispatch(todosActions.addTodo({
-            id: Math.random().toString(),
+        dispatch(addTodo({
             title,
             description,
             status: 'active'

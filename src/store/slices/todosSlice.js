@@ -1,5 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 
+import {addTodo, changeTodoStatus, fetchTodos} from "../thunks/todoThunks";
+
 const initialState = {
     todos: [],
     deletedTodos: [],
@@ -26,9 +28,6 @@ const todosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        addTodo(state, action) {
-            state.todos.push(action.payload)
-        },
         removeTodo(state, {payload}) {
             const todo = state.todos.find(t => t.id === payload.id)
             state.deletedTodos.push(todo)
@@ -42,6 +41,28 @@ const todosSlice = createSlice({
         changeStatus(state, {payload}) {
             const todo = state.todos.find(t => t.id === payload.id)
             todo.status = payload.status
+        },
+    },
+    extraReducers: {
+        [addTodo.fulfilled]: (state, action) => {
+            console.log(action)
+            state.todos.push(action.payload)
+        },
+        [fetchTodos.fulfilled]: (state, {payload}) => {
+            const loadedTodos = []
+            for (const key in payload) {
+                loadedTodos.push({
+                    id: key,
+                    title: payload[key].title,
+                    description: payload[key].description,
+                    status: payload[key].status
+                })
+            }
+            state.todos = [...loadedTodos]
+        },
+        [changeTodoStatus.fulfilled]: (state, action) => {
+            const todo = state.todos.find(t => t.id === action.payload.id)
+            todo.status = action.payload.status
         }
     }
 })
