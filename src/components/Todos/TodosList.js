@@ -16,7 +16,7 @@ const TodosList = ({statusFilter}) => {
 
     useEffect(() => {
         dispatch(fetchTodos())
-    }, [])
+    }, [dispatch])
 
     let todos
 
@@ -42,12 +42,13 @@ const TodosList = ({statusFilter}) => {
         dispatch(todosActions.restoreTodo({id}))
     }
 
-    const onChangeTodoStatusHandler = (id, status) => {
-        const dataObj = {
+    const onChangeTodoStatusHandler = ({id, status, description, title}) => {
+        dispatch(changeTodoStatus({
             id,
-            status
-        }
-        dispatch(changeTodoStatus(dataObj))
+            status,
+            description,
+            title
+        }))
     }
 
     const todosList = todos.length > 0 ? todos.map(t => <TodoItem

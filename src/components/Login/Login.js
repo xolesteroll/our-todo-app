@@ -48,6 +48,7 @@ const Login = () => {
                 }
             })
             const data = await response.json()
+            console.log(data)
             dispatch(login({
                 id: data.localId,
                 email: data.email,

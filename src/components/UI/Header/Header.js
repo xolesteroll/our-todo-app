@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import {Link, NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,9 +7,6 @@ import {authActions} from "../../../store/slices/authSlice";
 import logo from "../../../assets/images/connector-site_trigger-cron.png"
 
 import c from './Header.module.css'
-import {todosActions} from "../../../store/slices/todosSlice";
-import {fetchTodos} from "../../../store/thunks/todoThunks";
-
 const Header = () => {
     const isAuth = useSelector(state => state.auth.isAuth)
 

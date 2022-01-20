@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import c from "./AddTodo.module.css"
 import {addTodo} from "../../../store/thunks/todoThunks";
@@ -8,6 +8,8 @@ const AddTodo = () => {
     const [title, setText] = useState('')
     const [description, setDescription] = useState('')
     const dispatch = useDispatch()
+
+    const userId = useSelector(state => state.auth.id)
 
 
     const onTextChangeHandler = (e) => {
@@ -24,11 +26,15 @@ const AddTodo = () => {
     const onAddTodoHandler = (e) => {
         e.preventDefault()
 
-        dispatch(addTodo({
-            title,
-            description,
-            status: 'active'
-        }))
+        dispatch(addTodo(
+            {
+                todo: {
+                    title,
+                    description,
+                    status: 'active'
+                },
+                userId
+            }))
 
         setText('')
         setDescription('')

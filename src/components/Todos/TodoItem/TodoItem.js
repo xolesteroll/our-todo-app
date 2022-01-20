@@ -20,9 +20,14 @@ const TodoItem = React.memo(({
         setEditStatusMode(true)
     }
 
-    const changeTodoStatus = (status) => {
+    const changeTodoStatus = (changedStatus) => {
         console.log(id)
-        onChangeTodoStatus(id, status)
+        onChangeTodoStatus({
+            id,
+            title,
+            status: changedStatus,
+            description
+        })
         setEditStatusMode(false)
     }
 
