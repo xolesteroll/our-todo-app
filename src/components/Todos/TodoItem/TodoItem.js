@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import c from './TodoItem.module.css'
+import Modal from "../../UI/Modal/Modal";
 
 const TodoItem = React.memo(({
                                  id,
@@ -14,6 +15,8 @@ const TodoItem = React.memo(({
                                  statusesList
                              }) => {
 
+
+    const [showModal, setShowModal] = useState(false)
     const [editStatusMode, setEditStatusMode] = useState(false)
 
     const onDoubleClickHandler = () => {
@@ -31,23 +34,34 @@ const TodoItem = React.memo(({
         setEditStatusMode(false)
     }
 
+    const onToggleModal = () => {
+        setShowModal(prevState => !prevState)
+    }
+
     const currentStatusColor = statusesList.find(s => s.id === status).color
 
     const actionBtn = !deleted ?
-        <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={() => onRemoveTodo(id)}>delete</button> :
-        <button className={`${c.actionBtn} ${c.restoreBtn}`} onClick={() => onRestoreTodo(id)}>restore</button>
+        <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={onToggleModal}>delete</button> :
+        <button className={`${c.actionBtn} ${c.restoreBtn}`} onClick={onToggleModal}>restore</button>
 
 
     return (
-        <li className={c.listItem}>
-            <h3>{title}</h3>
-            <p>{description}</p>
-            <div onDoubleClick={!deleted ? onDoubleClickHandler : null}>
-                {!editStatusMode && !deleted &&
-                <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
+        <>
+            {showModal && <Modal
+                message={`Are you sure you want to ${!deleted ? 'delete' : 'restore'} this todo???`}
+                submittable
+                onSubmit={!deleted ? () => onRemoveTodo(id) : () => onRestoreTodo(id)}
+                onClose={onToggleModal}
+            />}
+            <li className={c.listItem}>
+                <h3>{title}</h3>
+                <p>{description}</p>
+                <div onDoubleClick={!deleted ? onDoubleClickHandler : null}>
+                    {!editStatusMode && !deleted &&
+                    <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
                     {status}
                 </span>}
-                {!editStatusMode && deleted &&
+                    {!editStatusMode && deleted &&
                     <>
                         <span>was on </span>
                         <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
@@ -55,22 +69,25 @@ const TodoItem = React.memo(({
                     </span>
                         <span> status before removal</span>
                     </>}
-                {editStatusMode &&
-                <div className={c.statusControls}>
-                    {statusesList.map(s => <button
-                        className={c.statusBtn}
-                        style={{backgroundColor: s.color}}
-                        onClick={() => changeTodoStatus(s.id)}
-                        key={s.id}
-                    >
-                        {s.id}
-                    </button>)}
+                    {editStatusMode &&
+                    <div className={c.statusControls}>
+                        {statusesList.map(s => <button
+                            className={c.statusBtn}
+                            style={{backgroundColor: s.color}}
+                            onClick={() => changeTodoStatus(s.id)}
+                            key={s.id}
+                        >
+                            {s.id}
+                        </button>)}
+                    </div>
+                    }
                 </div>
-                }
-            </div>
-            {actionBtn}
-        </li>
-    );
+                {actionBtn}
+            </li>
+        </>
+
+)
+    ;
 });
 
 export default TodoItem;

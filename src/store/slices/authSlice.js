@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {loginThunk, registerThunk} from "../thunks/authThunks";
 
 const initialState = {
-    isAuth: false,
+    isAuth: true,
     email: null,
     token: null,
     id: null,
