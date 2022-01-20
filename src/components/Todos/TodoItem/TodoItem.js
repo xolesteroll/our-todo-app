@@ -15,7 +15,6 @@ const TodoItem = React.memo(({
                                  statusesList
                              }) => {
 
-
     const [showModal, setShowModal] = useState(false)
     const [editStatusMode, setEditStatusMode] = useState(false)
 
@@ -34,16 +33,19 @@ const TodoItem = React.memo(({
         setEditStatusMode(false)
     }
 
-    const onToggleModal = () => {
-        setShowModal(prevState => !prevState)
+    const modalOpenHandler = () => {
+        setShowModal(true)
+    }
+
+    const modalCloseHandler = () => {
+        setShowModal(false)
     }
 
     const currentStatusColor = statusesList.find(s => s.id === status).color
 
     const actionBtn = !deleted ?
-        <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={onToggleModal}>delete</button> :
-        <button className={`${c.actionBtn} ${c.restoreBtn}`} onClick={onToggleModal}>restore</button>
-
+        <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={modalOpenHandler}>delete</button> :
+        <button className={`${c.actionBtn} ${c.restoreBtn}`} onClick={modalOpenHandler}>restore</button>
 
     return (
         <>
@@ -51,7 +53,7 @@ const TodoItem = React.memo(({
                 message={`Are you sure you want to ${!deleted ? 'delete' : 'restore'} this todo???`}
                 submittable
                 onSubmit={!deleted ? () => onRemoveTodo(id) : () => onRestoreTodo(id)}
-                onClose={onToggleModal}
+                onClose={modalCloseHandler}
             />}
             <li className={c.listItem}>
                 <h3>{title}</h3>
@@ -85,7 +87,6 @@ const TodoItem = React.memo(({
                 {actionBtn}
             </li>
         </>
-
 )
     ;
 });
