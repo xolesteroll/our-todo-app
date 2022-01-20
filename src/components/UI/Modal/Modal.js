@@ -4,7 +4,7 @@ import ModalOverlay from "./ModalOverlay/ModalOverlay";
 import c from './Modal.module.css'
 import {createPortal} from "react-dom";
 
-const Modal = ({message, onClose}) => {
+const Modal = ({message, onClose, onAdmit}) => {
     const portalDestination = document.getElementById('modal-root')
 
     return (

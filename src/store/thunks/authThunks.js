@@ -5,7 +5,6 @@ const apiKey = process.env.REACT_APP_FIREBASE_WEB_API_KEY
 export const loginThunk = createAsyncThunk(
     'auth/Login',
     async (data) => {
-        debugger
         const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
             method: 'POST',
             body: JSON.stringify({
