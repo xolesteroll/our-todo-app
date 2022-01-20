@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {authActions} from "../../store/slices/authSlice";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {loginThunk, registerThunk} from "../../store/thunks/authThunks";
 
 const Login = () => {
         const [emailValue, setEmailValue] = useState('')
@@ -10,8 +10,6 @@ const Login = () => {
 
         const dispatch = useDispatch()
         const navigate = useNavigate()
-
-        const {login} = authActions
 
         const onChangeEmailValueHandler = (e) => {
             const emailText = e.target.value
@@ -29,31 +27,17 @@ const Login = () => {
 
         const onLoginSubmitHandler = async (e) => {
             e.preventDefault()
-            let url
-            const apiKey = process.env.REACT_APP_FIREBASE_WEB_API_KEY
-            if (isLogin) {
-                url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`
-            } else {
-                url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`
+            const data = {
+                email: emailValue,
+                password: passwordValue
             }
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({
-                    email: emailValue,
-                    password: passwordValue,
-                    returnSecureToken: true
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const data = await response.json()
-            console.log(data)
-            dispatch(login({
-                id: data.localId,
-                email: data.email,
-                token: data.idToken
-            }))
+            if (isLogin) {
+                console.log('login')
+                dispatch(loginThunk(data))
+            } else {
+                console.log('register')
+                dispatch(registerThunk(data))
+            }
             navigate('/')
         }
 
