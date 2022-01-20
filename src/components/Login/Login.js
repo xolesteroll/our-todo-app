@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {authActions} from "../../store/slices/authSlice";
 import {loginThunk, registerThunk} from "../../store/thunks/authThunks";
+import Modal from "../UI/Modal/Modal";
 
 const Login = () => {
         const [emailValue, setEmailValue] = useState('')
         const [passwordValue, setPasswordValue] = useState('')
         const [isLogin, setIsLogin] = useState(false)
+
+        const error = useSelector(state => state.auth.error)
 
         const dispatch = useDispatch()
         const navigate = useNavigate()
@@ -31,32 +35,34 @@ const Login = () => {
                 email: emailValue,
                 password: passwordValue
             }
-            if (isLogin) {
-                console.log('login')
-                dispatch(loginThunk(data))
-            } else {
-                console.log('register')
-                dispatch(registerThunk(data))
-            }
-            navigate('/')
+
+            isLogin ? await dispatch(loginThunk(data)) : await dispatch(registerThunk(data))
+            error ? console.log(error) : navigate('/')
+        }
+
+        const onCloseModal = () => {
+            dispatch(authActions.clearError())
         }
 
 
         return (
-            <form onSubmit={onLoginSubmitHandler}>
-                <h3>{isLogin ? "Login" : "Sign Up"}</h3>
-                <label htmlFor="email">
-                    Your Email
-                </label>
-                <input type="email" value={emailValue} onChange={onChangeEmailValueHandler}/>
-                <label htmlFor="password">
-                    Your Password
-                </label>
-                <input type="password" value={passwordValue} onChange={onChangePasswordValueHandler}/>
-                <button type="submit">{isLogin ? "Login" : "Register"}</button>
-                <button type="button"
-                        onClick={onChangeIsLogin}>{isLogin ? "Create new account" : "Login with existing account"}</button>
-            </form>
+            <>
+                {error && <Modal onClose={onCloseModal} message={error}/>}
+                <form onSubmit={onLoginSubmitHandler}>
+                    <h3>{isLogin ? "Login" : "Sign Up"}</h3>
+                    <label htmlFor="email">
+                        Your Email
+                    </label>
+                    <input type="email" value={emailValue} onChange={onChangeEmailValueHandler}/>
+                    <label htmlFor="password">
+                        Your Password
+                    </label>
+                    <input type="password" value={passwordValue} onChange={onChangePasswordValueHandler}/>
+                    <button type="submit">{isLogin ? "Login" : "Register"}</button>
+                    <button type="button"
+                            onClick={onChangeIsLogin}>{isLogin ? "Create new account" : "Login with existing account"}</button>
+                </form>
+            </>
         );
     }
 ;
