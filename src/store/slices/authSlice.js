@@ -9,6 +9,17 @@ const initialState = {
     error: null
 }
 
+const authDataSetter = (state, payload) => {
+    if (!payload.error) {
+        state.email = payload.email
+        state.token = payload.token
+        state.id = payload.id
+        state.isAuth = true
+    } else {
+        state.error = payload.error.message
+    }
+}
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -22,21 +33,10 @@ const authSlice = createSlice({
     },
     extraReducers: {
         [loginThunk.fulfilled]: (state, {payload}) => {
-            console.log(payload)
-            state.email = payload.email
-            state.token = payload.token
-            state.id = payload.id
-            state.isAuth = true
+            authDataSetter(state, payload)
         },
         [registerThunk.fulfilled]: (state, {payload}) => {
-            if (!payload.error) {
-                state.email = payload.email
-                state.token = payload.token
-                state.id = payload.id
-                state.isAuth = true
-            } else {
-                state.error = payload.error.message
-            }
+            authDataSetter(state, payload)
         }
     }
 })

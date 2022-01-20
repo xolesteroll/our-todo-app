@@ -19,11 +19,16 @@ export const loginThunk = createAsyncThunk(
         })
         const responseData = await response.json()
         console.log(responseData)
-        return {
-            id: responseData.localId,
-            email: responseData.email,
-            token: responseData.idToken
+        if (!responseData.error) {
+            return {
+                id: responseData.localId,
+                email: responseData.email,
+                token: responseData.idToken
+            }
+        } else {
+            return responseData
         }
+
 
     }
 )
