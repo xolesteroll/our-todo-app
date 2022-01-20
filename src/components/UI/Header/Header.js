@@ -7,6 +7,7 @@ import {authActions} from "../../../store/slices/authSlice";
 import logo from "../../../assets/images/connector-site_trigger-cron.png"
 
 import c from './Header.module.css'
+
 const Header = () => {
     const isAuth = useSelector(state => state.auth.isAuth)
 
@@ -27,6 +28,7 @@ const Header = () => {
         </> :
         <button onClick={onLoginHandler}>Login/Register</button>
 
+    const activeClassFunc = ({isActive}) => `${c.headerNavLink} ${isActive ? c.active : ""}`
 
     return (
         <div className={c.header}>
@@ -37,9 +39,9 @@ const Header = () => {
                     </Link>
                 </div>
                 <nav className={c.headerNav}>
-                    <NavLink className={c.headerNavLink} to="/">Home</NavLink>
-                    <NavLink className={c.headerNavLink} to="/all-todos">View all todos</NavLink>
-                    <NavLink className={c.headerNavLink} to="/add-new">Add new todo</NavLink>
+                    <NavLink className={activeClassFunc} to="/">Home</NavLink>
+                    <NavLink className={activeClassFunc} to="/all-todos">View all todos</NavLink>
+                    <NavLink className={activeClassFunc} to="/add-new">Add new todo</NavLink>
                     {authNav}
                 </nav>
             </div>

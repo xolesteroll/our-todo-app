@@ -43,8 +43,18 @@ const TodoItem = React.memo(({
             <h3>{title}</h3>
             <p>{description}</p>
             <div onDoubleClick={!deleted ? onDoubleClickHandler : null}>
-                {!editStatusMode &&
-                <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>{status}</span>}
+                {!editStatusMode && !deleted &&
+                <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
+                    {status}
+                </span>}
+                {!editStatusMode && deleted &&
+                    <>
+                        <span>was on </span>
+                        <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
+                {status}
+                    </span>
+                        <span> status before removal</span>
+                    </>}
                 {editStatusMode &&
                 <div className={c.statusControls}>
                     {statusesList.map(s => <button

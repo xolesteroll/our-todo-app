@@ -31,6 +31,9 @@
 .headerNavLink {
     color: #ffffff;
     text-decoration: none;
+}
 
+.headerNavLink.active {
+    color: blue;
 }
 
