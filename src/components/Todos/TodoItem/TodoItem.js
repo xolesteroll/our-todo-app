@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
+import Modal from "../../UI/Modal/Modal";
 
 import c from './TodoItem.module.css'
-import Modal from "../../UI/Modal/Modal";
 
 const TodoItem = React.memo(({
                                  id,
                                  title,
                                  description,
+                                 author,
                                  deleted,
                                  status,
                                  onRemoveTodo,
@@ -28,7 +29,8 @@ const TodoItem = React.memo(({
             id,
             title,
             status: changedStatus,
-            description
+            description,
+            author
         })
         setEditStatusMode(false)
     }
@@ -63,6 +65,7 @@ const TodoItem = React.memo(({
                     <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
                     {status}
                 </span>}
+                    {/*//Status section on deleted items*/}
                     {!editStatusMode && deleted &&
                     <>
                         <span>was on </span>
@@ -87,8 +90,8 @@ const TodoItem = React.memo(({
                 {actionBtn}
             </li>
         </>
-)
-    ;
+    )
+        ;
 });
 
 export default TodoItem;

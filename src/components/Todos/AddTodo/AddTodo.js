@@ -5,7 +5,7 @@ import c from "./AddTodo.module.css"
 import {addTodo} from "../../../store/thunks/todoThunks";
 
 const AddTodo = () => {
-    const [title, setText] = useState('')
+    const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const dispatch = useDispatch()
 
@@ -14,7 +14,7 @@ const AddTodo = () => {
 
     const onTextChangeHandler = (e) => {
         const text = e.target.value
-        setText(text)
+        setTitle(text)
     }
 
     const onDescriptionChangeHandler = (e) => {
@@ -31,12 +31,12 @@ const AddTodo = () => {
                 todo: {
                     title,
                     description,
-                    status: 'active'
-                },
-                userId
+                    status: 'active',
+                    author: userId
+                }
             }))
 
-        setText('')
+        setTitle('')
         setDescription('')
     }
     return (

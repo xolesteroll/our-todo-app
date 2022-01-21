@@ -51,11 +51,13 @@ const todosSlice = createSlice({
         [fetchTodos.fulfilled]: (state, {payload}) => {
             const loadedTodos = []
             for (const key in payload) {
+                if (payload)
                 loadedTodos.push({
                     id: key,
                     title: payload[key].title,
                     description: payload[key].description,
-                    status: payload[key].status
+                    status: payload[key].status,
+                    author: payload[key].author
                 })
             }
             state.todos = [...loadedTodos]

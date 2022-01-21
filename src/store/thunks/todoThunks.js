@@ -19,7 +19,7 @@ export const addTodo = createAsyncThunk(
     'todos/addTodo',
     async (data) => {
         try {
-            const response = await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos.json/`, {
+            const response = await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos.json`, {
                 method: 'POST',
                 body: JSON.stringify(data.todo),
                 headers: {

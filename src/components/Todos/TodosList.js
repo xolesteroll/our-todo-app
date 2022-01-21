@@ -13,6 +13,7 @@ const TodosList = ({statusFilter}) => {
     const dispatch = useDispatch()
 
     const todosState = useSelector(state => state.todos)
+    const userId = useSelector(state => state.auth.id)
 
     useEffect(() => {
         dispatch(fetchTodos())
@@ -42,23 +43,25 @@ const TodosList = ({statusFilter}) => {
         dispatch(todosActions.restoreTodo({id}))
     }
 
-    const onChangeTodoStatusHandler = ({id, status, description, title}) => {
+    const onChangeTodoStatusHandler = ({id, status, description, title, author}) => {
         dispatch(changeTodoStatus({
             id,
             status,
             description,
-            title
+            title,
+            author
         }))
     }
 
+    const filteredTodos = todos.filter(t => t.author === userId)
 
-
-    const todosList = todos.length > 0 ? todos.map(t => <TodoItem
+    const todosList = filteredTodos.length > 0 ? filteredTodos.map(t => <TodoItem
             key={t.id}
             id={t.id}
             deleted={statusFilter === 'deleted'}
             status={t.status}
             title={t.title}
+            author={t.author}
             description={t.description}
             onRemoveTodo={onRemoveTodoHandler}
             onRestoreTodo={onRestoreTodoHandler}
