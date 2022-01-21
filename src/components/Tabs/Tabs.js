@@ -7,7 +7,6 @@ import {useSelector} from "react-redux";
 const Tabs = () => {
     const [activeStatus, setActiveStatus] = useState('all')
     const statusesList = useSelector(state => state.todos.statuses)
-    console.log(activeStatus)
 
     const onNavButtonClickHandler = (status) => {
         setActiveStatus(status)
@@ -25,7 +24,6 @@ const Tabs = () => {
                         {h.label}
                     </li>
                 )}
-                <li className={c.tabsNavItem} onClick={() => onNavButtonClickHandler('deleted')}>Deleted</li>
             </ul>
             <div className={c.tabsContent}>
                 <TodosList statusFilter={activeStatus}/>

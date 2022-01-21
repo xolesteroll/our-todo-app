@@ -8,7 +8,7 @@ import Modal from "../UI/Modal/Modal";
 const Login = () => {
         const [emailValue, setEmailValue] = useState('')
         const [passwordValue, setPasswordValue] = useState('')
-        const [isLogin, setIsLogin] = useState(false)
+        const [isLogin, setIsLogin] = useState(true)
 
         const error = useSelector(state => state.auth.error)
 

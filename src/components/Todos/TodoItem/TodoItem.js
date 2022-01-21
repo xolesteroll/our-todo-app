@@ -10,6 +10,7 @@ const TodoItem = React.memo(({
                                  author,
                                  deleted,
                                  status,
+                                 oldStatus,
                                  onRemoveTodo,
                                  onRestoreTodo,
                                  onChangeTodoStatus,
@@ -44,6 +45,7 @@ const TodoItem = React.memo(({
     }
 
     const currentStatusColor = statusesList.find(s => s.id === status).color
+    const oldStatusColor = statusesList.find(s => s.id === oldStatus).color
 
     const actionBtn = !deleted ?
         <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={modalOpenHandler}>delete</button> :
@@ -54,7 +56,7 @@ const TodoItem = React.memo(({
             {showModal && <Modal
                 message={`Are you sure you want to ${!deleted ? 'delete' : 'restore'} this todo???`}
                 submittable
-                onSubmit={!deleted ? () => onRemoveTodo(id) : () => onRestoreTodo(id)}
+                onSubmit={!deleted ? () => onRemoveTodo(id) : () => onRestoreTodo(id, oldStatus)}
                 onClose={modalCloseHandler}
             />}
             <li className={c.listItem}>
@@ -69,21 +71,26 @@ const TodoItem = React.memo(({
                     {!editStatusMode && deleted &&
                     <>
                         <span>was on </span>
-                        <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
-                {status}
+                        <span className={c.statusBar} style={{backgroundColor: oldStatusColor}}>
+                {oldStatus}
                     </span>
                         <span> status before removal</span>
                     </>}
                     {editStatusMode &&
                     <div className={c.statusControls}>
-                        {statusesList.map(s => <button
-                            className={c.statusBtn}
-                            style={{backgroundColor: s.color}}
-                            onClick={() => changeTodoStatus(s.id)}
-                            key={s.id}
-                        >
-                            {s.id}
-                        </button>)}
+                        {statusesList.map(s => {
+                            if (s.id === 'deleted') {
+                                return null
+                            }
+                            return <button
+                                className={c.statusBtn}
+                                style={{backgroundColor: s.color}}
+                                onClick={() => changeTodoStatus(s.id)}
+                                key={s.id}
+                            >
+                                {s.id}
+                            </button>
+                        })}
                     </div>
                     }
                 </div>

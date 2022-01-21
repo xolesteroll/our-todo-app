@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {todosActions} from "../../store/slices/todosSlice";
 
 import TodoItem from "./TodoItem/TodoItem";
 
 import s from './TodosList.module.css'
 import {Link} from "react-router-dom";
-import {changeTodoStatus, fetchTodos} from "../../store/thunks/todoThunks";
+import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store/thunks/todoThunks";
 
 
 const TodosList = ({statusFilter}) => {
@@ -26,21 +25,21 @@ const TodosList = ({statusFilter}) => {
     }
 
     if (statusFilter === 'all') {
-        todos = todosState.todos
+        todos = todosState.todos.filter(t => t.status !== 'deleted')
     }
 
     if (statusFilter === 'deleted') {
-        todos = todosState.deletedTodos
+        todos = todosState.todos.filter(t => t.status === 'deleted')
     }
 
     const statusesList = todosState.statuses
 
     const onRemoveTodoHandler = (id) => {
-        dispatch(todosActions.removeTodo({id}))
+        dispatch(deleteTodo({id}))
     }
 
-    const onRestoreTodoHandler = (id) => {
-        dispatch(todosActions.restoreTodo({id}))
+    const onRestoreTodoHandler = (id, oldStatus) => {
+        dispatch(restoreTodo({id, oldStatus}))
     }
 
     const onChangeTodoStatusHandler = ({id, status, description, title, author}) => {
@@ -60,6 +59,7 @@ const TodosList = ({statusFilter}) => {
             id={t.id}
             deleted={statusFilter === 'deleted'}
             status={t.status}
+            oldStatus={t.oldStatus}
             title={t.title}
             author={t.author}
             description={t.description}

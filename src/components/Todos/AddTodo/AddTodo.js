@@ -32,6 +32,7 @@ const AddTodo = () => {
                     title,
                     description,
                     status: 'active',
+                    oldStatus: 'active',
                     author: userId
                 }
             }))
