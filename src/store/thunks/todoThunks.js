@@ -1,11 +1,13 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
+const dbUrl = process.env.REACT_APP_FIREBASE_DATABASE_URL
+
 
 export const fetchTodos = createAsyncThunk(
     'todos/fetchTodos',
     async () => {
         try {
-            const response = await fetch('https://my-todo-4ba56-default-rtdb.firebaseio.com/todos.json')
+            const response = await fetch(`${dbUrl}/todos.json`)
             const data = await response.json()
             console.log(data)
             return data
@@ -19,7 +21,7 @@ export const addTodo = createAsyncThunk(
     'todos/addTodo',
     async (data) => {
         try {
-            const response = await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos.json`, {
+            const response = await fetch(`${dbUrl}/todos.json`, {
                 method: 'POST',
                 body: JSON.stringify(data.todo),
                 headers: {
@@ -43,7 +45,7 @@ export const changeTodoStatus = createAsyncThunk(
     async (data) => {
         try {
             debugger
-            await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos/${data.id}.json`, {
+            await fetch(`${dbUrl}/todos/${data.id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
                     oldStatus: data.oldStatus,
@@ -64,7 +66,7 @@ export const deleteTodo = createAsyncThunk(
     'todos/deleteTodo',
     async (data) => {
         try {
-            await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos/${data.id}.json`, {
+            await fetch(`${dbUrl}/todos/${data.id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
                     oldStatus: data.status,
@@ -85,7 +87,7 @@ export const restoreTodo = createAsyncThunk(
     'todos/restoreTodo',
     async (data) => {
         try {
-            await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos/${data.id}.json`, {
+            await fetch(`${dbUrl}/todos/${data.id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
                     status: data.oldStatus,
