@@ -34,21 +34,19 @@ const TodosList = ({statusFilter}) => {
 
     const statusesList = todosState.statuses
 
-    const onRemoveTodoHandler = (id) => {
-        dispatch(deleteTodo({id}))
+    const onRemoveTodoHandler = (id, status) => {
+        dispatch(deleteTodo({id, status}))
     }
 
     const onRestoreTodoHandler = (id, oldStatus) => {
         dispatch(restoreTodo({id, oldStatus}))
     }
 
-    const onChangeTodoStatusHandler = ({id, status, description, title, author}) => {
+    const onChangeTodoStatusHandler = ({id, status, oldStatus}) => {
         dispatch(changeTodoStatus({
             id,
             status,
-            description,
-            title,
-            author
+            oldStatus
         }))
     }
 

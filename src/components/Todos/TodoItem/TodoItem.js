@@ -30,8 +30,7 @@ const TodoItem = React.memo(({
             id,
             title,
             status: changedStatus,
-            description,
-            author
+            oldStatus
         })
         setEditStatusMode(false)
     }
@@ -56,7 +55,7 @@ const TodoItem = React.memo(({
             {showModal && <Modal
                 message={`Are you sure you want to ${!deleted ? 'delete' : 'restore'} this todo???`}
                 submittable
-                onSubmit={!deleted ? () => onRemoveTodo(id) : () => onRestoreTodo(id, oldStatus)}
+                onSubmit={!deleted ? () => onRemoveTodo(id, status) : () => onRestoreTodo(id, oldStatus)}
                 onClose={modalCloseHandler}
             />}
             <li className={c.listItem}>

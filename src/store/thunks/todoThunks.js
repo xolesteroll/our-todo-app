@@ -42,9 +42,11 @@ export const changeTodoStatus = createAsyncThunk(
     'todos/changeStatus',
     async (data) => {
         try {
+            debugger
             await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos/${data.id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
+                    oldStatus: data.oldStatus,
                     status: data.status
                 }),
                 headers: {
@@ -65,6 +67,7 @@ export const deleteTodo = createAsyncThunk(
             await fetch(`https://my-todo-4ba56-default-rtdb.firebaseio.com/todos/${data.id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
+                    oldStatus: data.status,
                     status: 'deleted',
                 }),
                 headers: {
