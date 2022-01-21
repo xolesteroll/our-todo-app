@@ -32,17 +32,10 @@ const initialState = {
 const todosSlice = createSlice({
     name: 'todos',
     initialState,
-    reducers: {
-        changeStatus(state, {payload}) {
-            const todo = state.todos.find(t => t.id === payload.id)
-            todo.oldStatus = todo.status
-            todo.status = payload.status
-        },
-    },
+    reducers: {},
     extraReducers: {
-        [addTodo.fulfilled]: (state, action) => {
-            console.log(action)
-            state.todos.push(action.payload)
+        [addTodo.fulfilled]: (state, {payload}) => {
+            state.todos.push(payload)
         },
         [fetchTodos.fulfilled]: (state, {payload}) => {
             const loadedTodos = []
@@ -59,10 +52,10 @@ const todosSlice = createSlice({
             }
             state.todos = [...loadedTodos]
         },
-        [changeTodoStatus.fulfilled]: (state, action) => {
-            const todo = state.todos.find(t => t.id === action.payload.id)
+        [changeTodoStatus.fulfilled]: (state, {payload}) => {
+            const todo = state.todos.find(t => t.id === payload.id)
             todo.oldStatus = todo.status
-            todo.status = action.payload.status
+            todo.status = payload.status
         },
         [deleteTodo.fulfilled]: (state, {payload}) => {
             const todo = state.todos.find(t => t.id === payload.id)

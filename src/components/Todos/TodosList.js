@@ -2,10 +2,10 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import TodoItem from "./TodoItem/TodoItem";
-
-import s from './TodosList.module.css'
 import {Link} from "react-router-dom";
 import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store/thunks/todoThunks";
+
+import s from './TodosList.module.css'
 
 
 const TodosList = ({statusFilter}) => {
