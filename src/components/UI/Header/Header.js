@@ -13,22 +13,18 @@ const Header = () => {
 
     const dispatch = useDispatch()
 
-    const onLoginHandler = () => {
-        dispatch(authActions.login())
-    }
-
     const onLogoutHandler = () => {
         dispatch(authActions.logout())
     }
 
+    const activeClassFunc = ({isActive}) => `${c.headerNavLink} ${isActive ? c.active : ""}`
+
     const authNav = isAuth ?
         <>
-            <NavLink className={c.headerNavLink} to="/my-account">My Account</NavLink>
+            <NavLink className={activeClassFunc} to="/my-account">My Account</NavLink>
             <button onClick={onLogoutHandler}>Logout</button>
         </> :
-        <button onClick={onLoginHandler}>Login/Register</button>
-
-    const activeClassFunc = ({isActive}) => `${c.headerNavLink} ${isActive ? c.active : ""}`
+        <NavLink className={activeClassFunc} to="/login">Login</NavLink>
 
     return (
         <div className={c.header}>
@@ -39,9 +35,12 @@ const Header = () => {
                     </Link>
                 </div>
                 <nav className={c.headerNav}>
-                    <NavLink className={activeClassFunc} to="/">Home</NavLink>
-                    <NavLink className={activeClassFunc} to="/all-todos">View all todos</NavLink>
-                    <NavLink className={activeClassFunc} to="/add-new">Add new todo</NavLink>
+                    {
+                        isAuth && <>
+                        <NavLink className={activeClassFunc} to="/">Home</NavLink>
+                        <NavLink className={activeClassFunc} to="/my-todos">View my todos</NavLink>
+                        <NavLink className={activeClassFunc} to="/add-new">Add new todo</NavLink></>
+                    }
                     {authNav}
                 </nav>
             </div>

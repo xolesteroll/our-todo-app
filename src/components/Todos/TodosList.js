@@ -16,6 +16,7 @@ const TodosList = ({statusFilter}) => {
 
     useEffect(() => {
         dispatch(fetchTodos())
+        console.log('fetched')
     }, [dispatch])
 
     let todos

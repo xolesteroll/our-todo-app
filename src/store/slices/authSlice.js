@@ -2,11 +2,12 @@ import {createSlice} from "@reduxjs/toolkit";
 import {loginThunk, registerThunk} from "../thunks/authThunks";
 
 const initialState = {
-    isAuth: false,
+    isAuth: true,
     email: null,
     token: null,
     id: null,
-    error: null
+    error: null,
+    isFetching: false
 }
 
 const authDataSetter = (state, payload) => {
@@ -35,11 +36,19 @@ const authSlice = createSlice({
         }
     },
     extraReducers: {
+        [loginThunk.pending]: (state) => {
+            state.isFetching = true
+        },
         [loginThunk.fulfilled]: (state, {payload}) => {
             authDataSetter(state, payload)
+            state.isFetching = false
+        },
+        [registerThunk.pending]: (state) => {
+            state.isFetching = true
         },
         [registerThunk.fulfilled]: (state, {payload}) => {
             authDataSetter(state, payload)
+            state.isFetching = false
         }
     }
 })

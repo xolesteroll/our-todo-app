@@ -25,7 +25,8 @@ const initialState = {
             label: 'Deleted',
             color: 'red'
         }
-    ]
+    ],
+    isFetching: false
 }
 
 const todosSlice = createSlice({
@@ -33,10 +34,19 @@ const todosSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
+        [addTodo.pending]: (state) => {
+            state.isFetching = true
+        },
         [addTodo.fulfilled]: (state, {payload}) => {
             state.todos.push(payload)
+            state.isFetching = false
+        },
+        [fetchTodos.pending]: (state) => {
+            debugger
+            // state.isFetching = true
         },
         [fetchTodos.fulfilled]: (state, {payload}) => {
+            debugger
             const loadedTodos = []
             for (const key in payload) {
                 if (payload)
@@ -50,20 +60,33 @@ const todosSlice = createSlice({
                     })
             }
             state.todos = [...loadedTodos]
+            state.isFetching = false
+        },
+        [changeTodoStatus.pending]: (state) => {
+            state.isFetching = true
         },
         [changeTodoStatus.fulfilled]: (state, {payload}) => {
             const todo = state.todos.find(t => t.id === payload.id)
             todo.oldStatus = todo.status
             todo.status = payload.status
+            state.isFetching = false
+        },
+        [deleteTodo.pending]: (state) => {
+            state.isFetching = true
         },
         [deleteTodo.fulfilled]: (state, {payload}) => {
             const todo = state.todos.find(t => t.id === payload.id)
             todo.oldStatus = todo.status
             todo.status = 'deleted'
+            state.isFetching = false
+        },
+        [restoreTodo.pending]: (state, {payload}) => {
+            state.isFetching = true
         },
         [restoreTodo.fulfilled]: (state, {payload}) => {
             const todo = state.todos.find(t => t.id === payload.id)
             todo.status = todo.oldStatus
+            state.isFetching = false
         }
     }
 })
