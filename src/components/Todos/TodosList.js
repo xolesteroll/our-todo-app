@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import TodoItem from "./TodoItem/TodoItem";
@@ -10,14 +10,18 @@ import s from './TodosList.module.css'
 
 const TodosList = ({statusFilter}) => {
     const dispatch = useDispatch()
+    const [fetched, setFetched] = useState(false)
 
     const todosState = useSelector(state => state.todos)
     const userId = useSelector(state => state.auth.id)
 
     useEffect(() => {
-        dispatch(fetchTodos())
+        if (!fetched) {
+            dispatch(fetchTodos())
+            setFetched(true)
+        }
         console.log('fetched')
-    }, [dispatch])
+    }, [dispatch, fetched])
 
     let todos
 

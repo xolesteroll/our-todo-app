@@ -1,8 +1,6 @@
 import React from 'react';
 
-import {Link, NavLink} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {authActions} from "../../../store/slices/authSlice";
+import {Link} from "react-router-dom";
 
 import logo from "../../../assets/images/logo-10eeb40b2eee870f7950a668ee7ccd19.png"
 

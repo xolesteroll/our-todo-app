@@ -26,7 +26,8 @@ const initialState = {
             color: 'red'
         }
     ],
-    isFetching: false
+    isFetching: false,
+    fetched: false
 }
 
 const todosSlice = createSlice({
@@ -42,7 +43,7 @@ const todosSlice = createSlice({
             state.isFetching = false
         },
         [fetchTodos.pending]: (state) => {
-            // state.isFetching = true
+            state.isFetching = true
         },
         [fetchTodos.fulfilled]: (state, {payload}) => {
             const loadedTodos = []
