@@ -42,11 +42,9 @@ const todosSlice = createSlice({
             state.isFetching = false
         },
         [fetchTodos.pending]: (state) => {
-            debugger
             // state.isFetching = true
         },
         [fetchTodos.fulfilled]: (state, {payload}) => {
-            debugger
             const loadedTodos = []
             for (const key in payload) {
                 if (payload)

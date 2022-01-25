@@ -50,25 +50,10 @@
     margin: 10px;
 }
 
-.formControls button {
-    cursor: pointer;
-    width: fit-content;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    font-family: "BalsamiqSans Regular", sans-serif;
-    color: #ffffff;
-    font-size: 18px;
-    transition: padding 0.3s;
-}
 
-.formControls button:hover{
-    padding: 5px 16px 11px 10px;
-
-}
 
 .loginBtn {
-  background-color: #82b1ff;
+    background-color: #82b1ff;
 }
 
 .isLoginBtn {

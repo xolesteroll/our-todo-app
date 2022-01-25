@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 
 import c from './LoginForm.module.css'
+import MyButton from "../../UI/MyButton/MyButton";
 
 const LoginForm = ({
                        onFormSubmit,
                        isLogin,
                        onChangeIsLogin
-}) => {
+                   }) => {
     const [emailValue, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
 
@@ -43,10 +44,22 @@ const LoginForm = ({
                 <input type="password" value={passwordValue} onChange={onChangePasswordValueHandler}/>
             </div>
             <div className={c.formControls}>
-                <button className={c.loginBtn} type="submit">{isLogin ? "Login" : "Register"}</button>
+                <MyButton
+                    color="#ffffff"
+                    bgColor="#82b1ff"
+                    hoverColor="#000000"
+                    text={isLogin ? "Login" : "Register"}
+                    paddingOnHover
+                    type="submit"/>
                 <p>or</p>
-                <button className={c.isLoginBtn} type="button"
-                        onClick={onChangeIsLogin}>{isLogin ? "Create new account" : "Login with existing account"}</button>
+                <MyButton
+                    onClick={onChangeIsLogin}
+                    color="#ffffff"
+                    bgColor="#6fdd8f"
+                    hoverColor="#000000"
+                    paddingOnHover
+                    text={isLogin ? "Create new account" : "Login with existing account"}/>
+
             </div>
         </form>
     );

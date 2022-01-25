@@ -4,27 +4,12 @@ import {Link, NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {authActions} from "../../../store/slices/authSlice";
 
-import logo from "../../../assets/images/connector-site_trigger-cron.png"
+import logo from "../../../assets/images/logo-10eeb40b2eee870f7950a668ee7ccd19.png"
 
 import c from './Header.module.css'
+import HeaderNav from "./HeaderNav/HeaderNav";
 
 const Header = () => {
-    const isAuth = useSelector(state => state.auth.isAuth)
-
-    const dispatch = useDispatch()
-
-    const onLogoutHandler = () => {
-        dispatch(authActions.logout())
-    }
-
-    const activeClassFunc = ({isActive}) => `${c.headerNavLink} ${isActive ? c.active : ""}`
-
-    const authNav = isAuth ?
-        <>
-            <NavLink className={activeClassFunc} to="/my-account">My Account</NavLink>
-            <button onClick={onLogoutHandler}>Logout</button>
-        </> :
-        <NavLink className={activeClassFunc} to="/login">Login</NavLink>
 
     return (
         <div className={c.header}>
@@ -34,15 +19,7 @@ const Header = () => {
                         <img src={logo} alt="main logo"/>
                     </Link>
                 </div>
-                <nav className={c.headerNav}>
-                    {
-                        isAuth && <>
-                        <NavLink className={activeClassFunc} to="/">Home</NavLink>
-                        <NavLink className={activeClassFunc} to="/my-todos">View my todos</NavLink>
-                        <NavLink className={activeClassFunc} to="/add-new">Add new todo</NavLink></>
-                    }
-                    {authNav}
-                </nav>
+                <HeaderNav />
             </div>
         </div>
     );

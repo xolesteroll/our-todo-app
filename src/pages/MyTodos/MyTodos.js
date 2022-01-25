@@ -9,7 +9,11 @@ const MyTodos = () => {
     const isFetching = useSelector(state => state.todos.isFetching)
 
     return (
-        !isFetching ? <Tabs /> : <Spinner />
+        <>
+            {isFetching && <Spinner/>}
+            <Tabs/>
+        </>
+
     );
 };
 
