@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import TodoItem from "./TodoItem/TodoItem";
@@ -8,20 +8,34 @@ import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store
 import s from './TodosList.module.css'
 
 
-const TodosList = ({statusFilter}) => {
+const TodosList = ({statusFilter, setTodosQtyHandler}) => {
     const dispatch = useDispatch()
     const [fetched, setFetched] = useState(false)
 
     const todosState = useSelector(state => state.todos)
     const userId = useSelector(state => state.auth.id)
 
-    useEffect(() => {
+    console.log(todosState.todos)
+    const setTodosQuantityHandler = useCallback(() => {
+        const todosQtyObject = todosState.todos.reduce((obj, curr) => {
+            return {
+                ...obj,
+                todos: obj.todos + 1 || 0,
+                [curr.status]: obj[curr.status] + 1 || 0
+            }
+        }, {})
+
+        setTodosQtyHandler(todosQtyObject)
+    }, [setTodosQtyHandler, todosState.todos])
+
+    useEffect( () => {
         if (!fetched) {
-            dispatch(fetchTodos())
+             dispatch(fetchTodos())
             setFetched(true)
+            setTodosQuantityHandler()
         }
-        console.log('fetched')
-    }, [dispatch, fetched])
+
+    }, [dispatch, fetched, todosState.todos, setTodosQuantityHandler])
 
     let todos
 
@@ -41,10 +55,12 @@ const TodosList = ({statusFilter}) => {
 
     const onRemoveTodoHandler = (id, status) => {
         dispatch(deleteTodo({id, status}))
+        setTodosQuantityHandler()
     }
 
     const onRestoreTodoHandler = (id, oldStatus) => {
         dispatch(restoreTodo({id, oldStatus}))
+        setTodosQuantityHandler()
     }
 
     const onChangeTodoStatusHandler = ({id, status, oldStatus}) => {
@@ -53,6 +69,7 @@ const TodosList = ({statusFilter}) => {
             status,
             oldStatus
         }))
+        setTodosQuantityHandler()
     }
 
     const filteredTodos = todos.filter(t => t.author === userId)

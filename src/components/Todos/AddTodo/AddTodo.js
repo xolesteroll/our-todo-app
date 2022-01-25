@@ -1,53 +1,30 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import c from "./AddTodo.module.css"
 import {addTodo} from "../../../store/thunks/todoThunks";
+import {useNavigate} from "react-router-dom";
+import AddTodoForm from "./AddTodoForm/AddTodoForm";
 
 const AddTodo = () => {
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const userId = useSelector(state => state.auth.id)
 
-
-    const onTextChangeHandler = (e) => {
-        const text = e.target.value
-        setTitle(text)
-    }
-
-    const onDescriptionChangeHandler = (e) => {
-        const descr = e.target.value
-        console.log(descr)
-        setDescription(descr)
-    }
-
-    const onAddTodoHandler = (e) => {
-        e.preventDefault()
-
+    const onAddTodoHandler = (todo) => {
         dispatch(addTodo(
             {
                 todo: {
-                    title,
-                    description,
+                    ...todo,
                     status: 'active',
                     oldStatus: 'active',
                     author: userId
                 }
             }))
-
-        setTitle('')
-        setDescription('')
+        navigate('/my-todos')
     }
     return (
-        <form className={c.addTodoForm} onSubmit={onAddTodoHandler}>
-            <label htmlFor="title">Enter the title</label>
-            <input name="title" value={title} onChange={onTextChangeHandler} type="text"/>
-            <label htmlFor="description">Describe the Todo</label>
-            <textarea name="description" value={description} onChange={onDescriptionChangeHandler} type="text"/>
-            <button type="submit">Добавить</button>
-        </form>
+        <AddTodoForm onAddTodoHandler={onAddTodoHandler}/>
     );
 };
 

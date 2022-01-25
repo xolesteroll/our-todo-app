@@ -2,31 +2,26 @@ import React, {useState} from 'react';
 
 import c from './Tabs.module.css'
 import TodosList from "../Todos/TodosList";
-import {useSelector} from "react-redux";
+import TabsList from "./TabsList/TabsList";
 
 const Tabs = () => {
     const [activeStatus, setActiveStatus] = useState('all')
-    const statusesList = useSelector(state => state.todos.statuses)
+    const [todosQty, setTodosQty] = useState({})
 
+    console.log(todosQty)
     const onNavButtonClickHandler = (status) => {
         setActiveStatus(status)
     }
 
+    const setTodosQtyHandler = (qtyObject) => {
+        setTodosQty(qtyObject)
+    }
+
     return (
         <div className={c.tabs}>
-            <ul className={c.tabsNav}>
-                <li className={c.tabsNavItem} onClick={() => onNavButtonClickHandler('all')}>All</li>
-                {statusesList.map(h => <li
-                        className={c.tabsNavItem}
-                        key={h.id}
-                        onClick={() => onNavButtonClickHandler(h.id)}
-                    >
-                        {h.label}
-                    </li>
-                )}
-            </ul>
+            <TabsList todosQuantity={todosQty} onNavButtonClickHandler={onNavButtonClickHandler}/>
             <div className={c.tabsContent}>
-                <TodosList statusFilter={activeStatus}/>
+                <TodosList setTodosQtyHandler={setTodosQtyHandler} statusFilter={activeStatus}/>
             </div>
         </div>
     );
