@@ -8,6 +8,7 @@ const LoginForm = ({
                        isLogin,
                        onChangeIsLogin
                    }) => {
+
     const [emailValue, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
 
@@ -53,7 +54,7 @@ const LoginForm = ({
                     type="submit"/>
                 <p>or</p>
                 <MyButton
-                    onClick={onChangeIsLogin}
+                    onClickHandler={onChangeIsLogin}
                     color="#ffffff"
                     bgColor="#6fdd8f"
                     hoverColor="#000000"
