@@ -15,8 +15,8 @@ function App() {
     return (
         <Layout>
             <Routes>
-                    <Route path="/login" element={!isAuth ? <Login/> : <Homepage/>}/>
                     <Route path="/" element={isAuth ? <Homepage/> : <Navigate to="/login"/>}/>
+                    <Route path="/login" element={!isAuth ? <Login/> : <Homepage/>}/>
                     <Route path="/add-new" element={isAuth ? <NewTodo/> : <Navigate to="/login"/>}/>
                     <Route path="/all-todos" element={isAuth ? <Tabs/> : <Navigate to="/login"/>}/>
                     <Route path="*" element={<NotFound/>}/>

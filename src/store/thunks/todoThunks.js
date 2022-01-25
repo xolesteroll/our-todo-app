@@ -9,7 +9,6 @@ export const fetchTodos = createAsyncThunk(
         try {
             const response = await fetch(`${dbUrl}/todos.json`)
             const data = await response.json()
-            console.log(data)
             return data
         } catch (e) {
             console.log(e.message)
@@ -19,11 +18,11 @@ export const fetchTodos = createAsyncThunk(
 
 export const addTodo = createAsyncThunk(
     'todos/addTodo',
-    async (data) => {
+    async ({todo}) => {
         try {
             const response = await fetch(`${dbUrl}/todos.json`, {
                 method: 'POST',
-                body: JSON.stringify(data.todo),
+                body: JSON.stringify(todo),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -31,7 +30,7 @@ export const addTodo = createAsyncThunk(
             const responseData = await response.json()
             return {
                 id: responseData.name,
-                ...data.todo
+                ...todo
             }
         } catch (e) {
             console.log(e.message)
@@ -42,20 +41,19 @@ export const addTodo = createAsyncThunk(
 
 export const changeTodoStatus = createAsyncThunk(
     'todos/changeStatus',
-    async (data) => {
+    async ({id, status, oldStatus}) => {
         try {
-            debugger
-            await fetch(`${dbUrl}/todos/${data.id}.json`, {
+            await fetch(`${dbUrl}/todos/${id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
-                    oldStatus: data.oldStatus,
-                    status: data.status
+                    oldStatus: oldStatus,
+                    status: status
                 }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            return {id: data.id, status: data.status}
+            return {id, status}
         } catch (e) {
             console.log(e.message)
         }
@@ -64,19 +62,19 @@ export const changeTodoStatus = createAsyncThunk(
 
 export const deleteTodo = createAsyncThunk(
     'todos/deleteTodo',
-    async (data) => {
+    async ({id, status}) => {
         try {
-            await fetch(`${dbUrl}/todos/${data.id}.json`, {
+            await fetch(`${dbUrl}/todos/${id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
-                    oldStatus: data.status,
+                    oldStatus: status,
                     status: 'deleted',
                 }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            return {id: data.id}
+            return {id}
         } catch (e) {
             console.log(e.message)
         }
@@ -85,18 +83,18 @@ export const deleteTodo = createAsyncThunk(
 
 export const restoreTodo = createAsyncThunk(
     'todos/restoreTodo',
-    async (data) => {
+    async ({id, oldStatus}) => {
         try {
-            await fetch(`${dbUrl}/todos/${data.id}.json`, {
+            await fetch(`${dbUrl}/todos/${id}.json`, {
                 method: 'PATCH',
                 body: JSON.stringify({
-                    status: data.oldStatus,
+                    status: oldStatus,
                 }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            return {id: data.id, oldStatus: data.oldStatus}
+            return {id, oldStatus}
         } catch (e) {
             console.log(e.message)
         }

@@ -27,8 +27,6 @@ export const loginThunk = createAsyncThunk(
         } else {
             return responseData
         }
-
-
     }
 )
 

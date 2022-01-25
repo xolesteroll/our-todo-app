@@ -4,7 +4,6 @@ import {addTodo, changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "..
 
 const initialState = {
     todos: [],
-    deletedTodos: [],
     statuses: [
         {
             id: 'active',
