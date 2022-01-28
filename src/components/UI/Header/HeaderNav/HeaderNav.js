@@ -1,6 +1,7 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {authActions} from "../../../../store/slices/authSlice";
+import {todosActions} from "../../../../store/slices/todosSlice";
 import c from "../Header.module.css";
 import {NavLink} from "react-router-dom";
 import MyButton from "../../MyButton/MyButton";
@@ -12,6 +13,8 @@ const HeaderNav = () => {
 
     const onLogoutHandler = () => {
         dispatch(authActions.logout())
+        dispatch(todosActions.setIsInitialFetch(true))
+        dispatch(todosActions.resetQty())
     }
 
     const activeClassFunc = ({isActive}) => `${c.headerNavLink} ${isActive ? c.active : ""}`

@@ -48,6 +48,18 @@ const todosSlice = createSlice({
         //     state.quantity[`${oldStatus}`]--
         //     state.quantity[`${status}`]++
         // }
+        setIsInitialFetch(state, {payload}) {
+            state.isInitialFetch = payload
+        },
+        resetQty(state) {
+            state.quantity = {
+                all: 0,
+                active: 0,
+                done: 0,
+                hold: 0,
+                deleted: 0
+            }
+        }
     },
     extraReducers: {
         [addTodo.pending]: (state) => {
@@ -75,12 +87,12 @@ const todosSlice = createSlice({
                         oldStatus: todos[key].oldStatus,
                         author: todos[key].author
                     })
-                    if (state.isInitialFetch && payload.userId === todos[key].author) {
-                        state.quantity[todos[key].status]++
-                        state.quantity['all'] = todos[key].status !==
-                        'deleted' ? state.quantity['all'] + 1 :
-                            state.quantity['all']
-                    }
+                if (state.isInitialFetch && payload.userId === todos[key].author) {
+                    state.quantity[todos[key].status]++
+                    state.quantity['all'] = todos[key].status !==
+                    'deleted' ? state.quantity['all'] + 1 :
+                        state.quantity['all']
+                }
             }
             state.todos = loadedTodos
             state.isFetching = false
