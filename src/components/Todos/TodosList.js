@@ -6,36 +6,24 @@ import {Link} from "react-router-dom";
 import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store/thunks/todoThunks";
 
 import s from './TodosList.module.css'
+import {todosActions} from "../../store/slices/todosSlice";
 
 
-const TodosList = ({statusFilter, setTodosQtyHandler}) => {
+const TodosList = ({statusFilter}) => {
     const dispatch = useDispatch()
     const [fetched, setFetched] = useState(false)
 
     const todosState = useSelector(state => state.todos)
     const userId = useSelector(state => state.auth.id)
 
-    console.log(todosState.todos)
-    const setTodosQuantityHandler = useCallback(() => {
-        const todosQtyObject = todosState.todos.reduce((obj, curr) => {
-            return {
-                ...obj,
-                todos: obj.todos + 1 || 0,
-                [curr.status]: obj[curr.status] + 1 || 0
-            }
-        }, {})
 
-        setTodosQtyHandler(todosQtyObject)
-    }, [setTodosQtyHandler, todosState.todos])
-
-    useEffect( () => {
+    useEffect(() => {
         if (!fetched) {
-             dispatch(fetchTodos())
+            dispatch(fetchTodos())
             setFetched(true)
-            setTodosQuantityHandler()
         }
 
-    }, [dispatch, fetched, todosState.todos, setTodosQuantityHandler])
+    }, [dispatch, fetched, todosState.todos])
 
     let todos
 
@@ -55,12 +43,10 @@ const TodosList = ({statusFilter, setTodosQtyHandler}) => {
 
     const onRemoveTodoHandler = (id, status) => {
         dispatch(deleteTodo({id, status}))
-        setTodosQuantityHandler()
     }
 
     const onRestoreTodoHandler = (id, oldStatus) => {
         dispatch(restoreTodo({id, oldStatus}))
-        setTodosQuantityHandler()
     }
 
     const onChangeTodoStatusHandler = ({id, status, oldStatus}) => {
@@ -69,7 +55,6 @@ const TodosList = ({statusFilter, setTodosQtyHandler}) => {
             status,
             oldStatus
         }))
-        setTodosQuantityHandler()
     }
 
     const filteredTodos = todos.filter(t => t.author === userId)

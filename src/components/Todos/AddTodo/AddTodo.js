@@ -23,6 +23,7 @@ const AddTodo = () => {
             }))
         navigate('/my-todos')
     }
+
     return (
         <AddTodoForm onAddTodoHandler={onAddTodoHandler}/>
     );

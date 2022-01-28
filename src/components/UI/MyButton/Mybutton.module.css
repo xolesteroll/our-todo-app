@@ -6,7 +6,7 @@
     border-radius: 3px;
     font-family: "BalsamiqSans Regular", sans-serif;
     font-size: 18px;
-    transition: padding 0.3s, background-color 0.3s;
+    transition: padding 0.2s, background-color 0.3s;
 }
 
 .myButton.paddingAnimated:hover {

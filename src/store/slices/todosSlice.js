@@ -4,6 +4,13 @@ import {addTodo, changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "..
 
 const initialState = {
     todos: [],
+    quantity: {
+        all: 0,
+        active: 0,
+        done: 0,
+        hold: 0,
+        deleted: 0
+    },
     statuses: [
         {
             id: 'active',
@@ -27,19 +34,29 @@ const initialState = {
         }
     ],
     isFetching: false,
-    fetched: false
+    isInitialFetch: true
 }
+
 
 const todosSlice = createSlice({
     name: 'todos',
     initialState,
-    reducers: {},
+    reducers: {
+        // onChangeStatus(state, {payload}) {
+        //     const [oldStatus, status] = payload
+        //     console.log(oldStatus, status)
+        //     state.quantity[`${oldStatus}`]--
+        //     state.quantity[`${status}`]++
+        // }
+    },
     extraReducers: {
         [addTodo.pending]: (state) => {
             state.isFetching = true
         },
         [addTodo.fulfilled]: (state, {payload}) => {
             state.todos.push(payload)
+            state.quantity['all'] += 1
+            state.quantity['active'] += 1
             state.isFetching = false
         },
         [fetchTodos.pending]: (state) => {
@@ -57,9 +74,16 @@ const todosSlice = createSlice({
                         oldStatus: payload[key].oldStatus,
                         author: payload[key].author
                     })
+                    if (state.isInitialFetch) {
+                        state.quantity[payload[key].status]++
+                        state.quantity['all'] = payload[key].status !==
+                        'deleted' ? state.quantity['all'] + 1 :
+                            state.quantity['all']
+                    }
             }
-            state.todos = [...loadedTodos]
+            state.todos = loadedTodos
             state.isFetching = false
+            state.isInitialFetch = false
         },
         [changeTodoStatus.pending]: (state) => {
             state.isFetching = true
@@ -68,6 +92,8 @@ const todosSlice = createSlice({
             const todo = state.todos.find(t => t.id === payload.id)
             todo.oldStatus = todo.status
             todo.status = payload.status
+            state.quantity[todo.oldStatus] -= 1
+            state.quantity[payload.status] += 1
             state.isFetching = false
         },
         [deleteTodo.pending]: (state) => {
@@ -77,14 +103,20 @@ const todosSlice = createSlice({
             const todo = state.todos.find(t => t.id === payload.id)
             todo.oldStatus = todo.status
             todo.status = 'deleted'
+            state.quantity[todo.oldStatus] -= 1
+            state.quantity['deleted'] += 1
+            state.quantity['all'] -= 1
             state.isFetching = false
         },
-        [restoreTodo.pending]: (state, {payload}) => {
+        [restoreTodo.pending]: (state) => {
             state.isFetching = true
         },
         [restoreTodo.fulfilled]: (state, {payload}) => {
             const todo = state.todos.find(t => t.id === payload.id)
             todo.status = todo.oldStatus
+            state.quantity[todo.status] += 1
+            state.quantity['deleted'] -= 1
+            state.quantity['all'] += 1
             state.isFetching = false
         }
     }

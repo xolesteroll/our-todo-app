@@ -6,22 +6,16 @@ import TabsList from "./TabsList/TabsList";
 
 const Tabs = () => {
     const [activeStatus, setActiveStatus] = useState('all')
-    const [todosQty, setTodosQty] = useState({})
 
-    console.log(todosQty)
     const onNavButtonClickHandler = (status) => {
         setActiveStatus(status)
     }
 
-    const setTodosQtyHandler = (qtyObject) => {
-        setTodosQty(qtyObject)
-    }
-
     return (
         <div className={c.tabs}>
-            <TabsList todosQuantity={todosQty} onNavButtonClickHandler={onNavButtonClickHandler}/>
+            <TabsList onNavButtonClickHandler={onNavButtonClickHandler}/>
             <div className={c.tabsContent}>
-                <TodosList setTodosQtyHandler={setTodosQtyHandler} statusFilter={activeStatus}/>
+                <TodosList statusFilter={activeStatus}/>
             </div>
         </div>
     );
