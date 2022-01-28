@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import TodoItem from "./TodoItem/TodoItem";
@@ -6,24 +6,18 @@ import {Link} from "react-router-dom";
 import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store/thunks/todoThunks";
 
 import s from './TodosList.module.css'
-import {todosActions} from "../../store/slices/todosSlice";
 
 
 const TodosList = ({statusFilter}) => {
     const dispatch = useDispatch()
-    const [fetched, setFetched] = useState(false)
 
     const todosState = useSelector(state => state.todos)
     const userId = useSelector(state => state.auth.id)
 
 
     useEffect(() => {
-        if (!fetched) {
-            dispatch(fetchTodos())
-            setFetched(true)
-        }
-
-    }, [dispatch, fetched, todosState.todos])
+        dispatch(fetchTodos())
+    }, [dispatch])
 
     let todos
 
