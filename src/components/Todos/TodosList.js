@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {todosActions} from "../../store/slices/todosSlice";
 
 import TodoItem from "./TodoItem/TodoItem";
 import {Link} from "react-router-dom";
@@ -15,7 +14,7 @@ const TodosList = ({statusFilter}) => {
     const todosState = useSelector(state => state.todos)
     const userId = useSelector(state => state.auth.id)
 
-
+    console.log('render')
     useEffect(() => {
         if (todosState.isInitialFetch) {
             dispatch(fetchTodos(userId))
@@ -83,4 +82,6 @@ const TodosList = ({statusFilter}) => {
     );
 };
 
-export default TodosList;
+const MemoizedTodosList = React.memo(TodosList)
+
+export default MemoizedTodosList;
