@@ -33,7 +33,6 @@ export const loginThunk = createAsyncThunk(
 export const registerThunk = createAsyncThunk(
     'auth/Register',
     async (data) => {
-        debugger
         try {
             const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`, {
                 method: 'POST',

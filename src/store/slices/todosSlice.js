@@ -64,19 +64,20 @@ const todosSlice = createSlice({
         },
         [fetchTodos.fulfilled]: (state, {payload}) => {
             const loadedTodos = []
-            for (const key in payload) {
+            const todos = payload.todos
+            for (const key in todos) {
                 if (payload)
                     loadedTodos.push({
                         id: key,
-                        title: payload[key].title,
-                        description: payload[key].description,
-                        status: payload[key].status,
-                        oldStatus: payload[key].oldStatus,
-                        author: payload[key].author
+                        title: todos[key].title,
+                        description: todos[key].description,
+                        status: todos[key].status,
+                        oldStatus: todos[key].oldStatus,
+                        author: todos[key].author
                     })
-                    if (state.isInitialFetch) {
-                        state.quantity[payload[key].status]++
-                        state.quantity['all'] = payload[key].status !==
+                    if (state.isInitialFetch && payload.userId === todos[key].author) {
+                        state.quantity[todos[key].status]++
+                        state.quantity['all'] = todos[key].status !==
                         'deleted' ? state.quantity['all'] + 1 :
                             state.quantity['all']
                     }

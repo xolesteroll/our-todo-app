@@ -5,11 +5,11 @@ const dbUrl = process.env.REACT_APP_FIREBASE_DATABASE_URL
 
 export const fetchTodos = createAsyncThunk(
     'todos/fetchTodos',
-    async () => {
+    async (userId) => {
         try {
             const response = await fetch(`${dbUrl}/todos.json`)
             const data = await response.json()
-            return data
+            return {todos: data, userId}
         } catch (e) {
             console.log(e.message)
         }

@@ -17,7 +17,7 @@ const TodosList = ({statusFilter}) => {
 
     useEffect(() => {
         if (todosState.isInitialFetch) {
-            dispatch(fetchTodos())
+            dispatch(fetchTodos(userId))
         }
     }, [dispatch])
 
