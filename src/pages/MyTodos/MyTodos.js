@@ -9,8 +9,7 @@ const MyTodos = () => {
 
     return (
         <>
-            {isFetching && <Spinner />}
-            <Tabs />
+            {isFetching ? <Spinner /> : <Tabs />}
         </>
     );
 };

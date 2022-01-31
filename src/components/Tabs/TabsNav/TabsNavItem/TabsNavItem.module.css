@@ -1,17 +1,16 @@
-.tabsNav {
-    display: flex;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
 .tabsNavItem {
-    cursor: pointer;
     max-width: 100%;
     width: 100%;
     min-height: 50px;
     text-align: center;
     padding: 20px 0;
     border: 1px solid #000000;
+    color: inherit;
+    transition: color 0.3s, background-color 0.2s;
+}
+
+.tabsNavItem.active {
+    color: #ffffff;
 }
 
 .tabsNavItem + .tabsNavItem{

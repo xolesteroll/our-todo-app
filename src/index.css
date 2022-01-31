@@ -1,26 +1,12 @@
-@font-face {
-    font-family: 'Dongle Bold';
-    src: local('Dongle'), url('./fonts/Dongle-Bold.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Dongle Light';
-    src: local('Dongle'), url('./fonts/Dongle-Light.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Dongle Regular';
-    src: local('Dongle'), url('./fonts/Dongle-Regular.ttf') format('truetype');
-}
 
 @font-face {
     font-family: 'BalsamiqSans Bold';
-    src: local('BalsamiqSans Bold'), url('./fonts/BalsamiqSans-Bold.ttf') format('truetype');
+    src: local('BalsamiqSans Bold'), url('./assets/fonts/BalsamiqSans-Bold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'BalsamiqSans Regular';
-    src: local('BalsamiqSans Regular'), url('./fonts/BalsamiqSans-Regular.ttf') format('truetype');
+    src: local('BalsamiqSans Regular'), url('./assets/fonts/BalsamiqSans-Regular.ttf') format('truetype');
 }
 
 html {

@@ -2,24 +2,28 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import TodoItem from "./TodoItem/TodoItem";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store/thunks/todoThunks";
 
 import s from './TodosList.module.css'
 
 
-const TodosList = ({statusFilter}) => {
+const TodosList = () => {
     const dispatch = useDispatch()
 
     const todosState = useSelector(state => state.todos)
     const userId = useSelector(state => state.auth.id)
 
-    console.log('render')
+    const urlParams = useParams()
+    const statusFilter = urlParams.statusFilter
+
+
+    console.log(urlParams)
     useEffect(() => {
         if (todosState.isInitialFetch) {
             dispatch(fetchTodos(userId))
         }
-    }, [dispatch])
+    }, [dispatch, todosState.isInitialFetch, userId])
 
     let todos
 
@@ -27,7 +31,7 @@ const TodosList = ({statusFilter}) => {
         todos = todosState.todos.filter(t => t.status === statusFilter)
     }
 
-    if (statusFilter === 'all') {
+    if (statusFilter === 'all' || !statusFilter) {
         todos = todosState.todos.filter(t => t.status !== 'deleted')
     }
 
@@ -55,7 +59,8 @@ const TodosList = ({statusFilter}) => {
 
     const filteredTodos = todos.filter(t => t.author === userId)
 
-    const todosList = filteredTodos.length > 0 ? filteredTodos.map(t => <TodoItem
+    const todosList = filteredTodos.length > 0 ? filteredTodos.map(t => {
+        return <TodoItem
             key={t.id}
             id={t.id}
             deleted={statusFilter === 'deleted'}
@@ -68,7 +73,8 @@ const TodosList = ({statusFilter}) => {
             onRestoreTodo={onRestoreTodoHandler}
             onChangeTodoStatus={onChangeTodoStatusHandler}
             statusesList={statusesList}
-        />) :
+        />
+    }) :
         <p>No <span>{statusFilter !== 'all' ? statusFilter : ''}</span> Todos yet, try <Link
             to="/add-new">adding</Link> one</p>
 

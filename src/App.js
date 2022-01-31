@@ -18,7 +18,9 @@ function App() {
                     <Route path="/" element={isAuth ? <Homepage/> : <Navigate to="/login"/>}/>
                     <Route path="/login" element={!isAuth ? <Login/> : <Homepage/>}/>
                     <Route path="/add-new" element={isAuth ? <NewTodo/> : <Navigate to="/login"/>}/>
-                    <Route path="/my-todos" element={isAuth ? <MyTodos/> : <Navigate to="/login"/>}/>
+                    <Route path="/my-todos" element={isAuth ? <MyTodos/> : <Navigate to="/login"/>}>
+                        <Route path=":statusFilter" element={<MyTodos/>} />
+                    </Route >
                     <Route path="*" element={isAuth ? <NotFound/> : <Navigate to="/login"/>}/>
             </Routes>
         </Layout>

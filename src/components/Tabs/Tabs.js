@@ -1,21 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import c from './Tabs.module.css'
 import TodosList from "../Todos/TodosList";
-import TabsList from "./TabsList/TabsList";
+import TabsList from "./TabsNav/TabsNav";
 
 const Tabs = () => {
-    const [activeStatus, setActiveStatus] = useState('all')
-
-    const onNavButtonClickHandler = (status) => {
-        setActiveStatus(status)
-    }
 
     return (
         <div className={c.tabs}>
-            <TabsList onNavButtonClickHandler={onNavButtonClickHandler}/>
+            <TabsList />
             <div className={c.tabsContent}>
-                <TodosList statusFilter={activeStatus}/>
+                <TodosList />
             </div>
         </div>
     );
