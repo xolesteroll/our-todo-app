@@ -8,7 +8,6 @@ const TabsNav = () => {
     const statusesList = useSelector(state => state.todos.statuses)
     const todosQuantity = useSelector(state => state.todos.quantity)
     const [navItemsData, setNavItemsData] = useState([])
-    console.log(navItemsData)
 
     useEffect(() => {
         const navItemsArray = [
@@ -33,7 +32,6 @@ const TabsNav = () => {
 
     const onChangeIsActiveHandler = (id) => {
         const changedArray = navItemsData.reduce((arr, curr) => {
-            console.log(id)
             return [
                 ...arr,
                 {
