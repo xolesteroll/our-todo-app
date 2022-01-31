@@ -1,28 +1,24 @@
-import React, {useState} from 'react';
-import {NavLink, useParams} from "react-router-dom";
+import React from 'react';
+import {NavLink} from "react-router-dom";
 
 import c from './TabsNavItem.module.css'
 
-const TabsNavItem = ({url, text, counter, activeBgColor}) => {
-    const [bgColor, setBgColor] = useState('transparent')
-    const params = useParams()
+const TabsNavItem = ({url, text, counter, activeBgColor, isItemActive, onChangeIsActive}) => {
 
-    const activeClassFunc = ({isActive}) => {
-        if (isActive || (!params.statusFilter && url === "all")) {
-            setBgColor(activeBgColor)
+    const activeClassFunc = (isActive) => {
+        if (isActive) {
             return `${c.tabsNavItem} ${c.active}`
         } else {
-            setBgColor('transparent')
             return c.tabsNavItem
         }
     }
 
     const styles = {
-        backgroundColor: bgColor
+        backgroundColor: isItemActive ? activeBgColor : 'transparent'
     }
 
     return (
-        <NavLink className={activeClassFunc} to={url} style={styles}>
+        <NavLink className={() => activeClassFunc(isItemActive)} onClick={onChangeIsActive} to={url} style={styles}>
             {text}<span>({counter ? counter : 0})</span>
         </NavLink>
     );
