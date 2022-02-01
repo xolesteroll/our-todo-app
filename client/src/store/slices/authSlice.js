@@ -1,9 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {loginThunk, registerThunk} from "../thunks/authThunks";
+import {loginThunk, registerThunk, authThunk} from "../thunks/authThunks";
 
 const initialState = {
     isAuth: false,
     email: null,
+    firstName: null,
+    lastName: null,
     token: null,
     id: null,
     error: null,
@@ -15,6 +17,8 @@ const authDataSetter = (state, payload) => {
         state.email = payload.email
         state.token = payload.token
         state.id = payload.id
+        state.firstName = payload.firstName
+        state.lastName = payload.lastName
         state.isAuth = true
     } else {
         state.error = payload.error.message
@@ -26,10 +30,14 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout(state) {
-            state.email = null
-            state.token = null
-            state.id = null
-            state.isAuth = false
+            for (const key in state) {
+                if (key !== "isAuth" && key !== "isFetching") {
+                    state[key] = null
+                } else {
+                    state[key] = false
+                }
+            }
+            localStorage.removeItem('token')
         },
         clearError(state) {
             state.error = null
@@ -47,6 +55,13 @@ const authSlice = createSlice({
             state.isFetching = true
         },
         [registerThunk.fulfilled]: (state, {payload}) => {
+            authDataSetter(state, payload)
+            state.isFetching = false
+        },
+        [authThunk.pending]: (state) => {
+            state.isFetching = true
+        },
+        [authThunk.fulfilled]: (state, {payload}) => {
             authDataSetter(state, payload)
             state.isFetching = false
         }

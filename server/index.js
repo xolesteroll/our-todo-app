@@ -3,11 +3,16 @@ const express = require('express')
 const mongoose = require('mongoose')
 const authRouter = require('./routes/auth.routes')
 const app = express()
+const cors = require('cors')
+
+
 const PORT = process.env.PORT
 const dbUrl = process.env.DATABASE_URL
 
 app.use(express.json())
+app.use(cors())
 app.use('/api/auth', authRouter)
+
 
 const start = async() => {
     try {

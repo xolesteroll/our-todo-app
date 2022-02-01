@@ -1,16 +1,17 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-const apiKey = process.env.REACT_APP_FIREBASE_WEB_API_KEY
+const baseURl = process.env.REACT_APP_BASE_REST_API_URL
 
 export const loginThunk = createAsyncThunk(
     'auth/Login',
     async (data) => {
-        const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
+        console.log(baseURl)
+
+        const response = await fetch(`${baseURl}/auth/login`, {
             method: 'POST',
             body: JSON.stringify({
                 email: data.email,
-                password: data.password,
-                returnSecureToken: true
+                password: data.password
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -19,10 +20,13 @@ export const loginThunk = createAsyncThunk(
         const responseData = await response.json()
         console.log(responseData)
         if (!responseData.error) {
+            localStorage.setItem('token', responseData.token)
             return {
-                id: responseData.localId,
-                email: responseData.email,
-                token: responseData.idToken
+                id: responseData.user.id,
+                email: responseData.user.email,
+                firstName: responseData.user.firstName,
+                lastName: responseData.user.lastName,
+                token: responseData.token
             }
         } else {
             return responseData
@@ -34,23 +38,27 @@ export const registerThunk = createAsyncThunk(
     'auth/Register',
     async (data) => {
         try {
-            const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`, {
+            console.log(data)
+            const response = await fetch(`${baseURl}/auth/registration`, {
                 method: 'POST',
                 body: JSON.stringify({
                     email: data.email,
                     password: data.password,
-                    returnSecureToken: true
+                    firstName: data.firstName,
+                    lastName: data.lastName,
                 }),
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
             const responseData = await response.json()
-            console.log(responseData)
             if (!responseData.error) {
+                localStorage.setItem('token', responseData.token)
                 return {
-                    id: responseData.localId,
-                    email: responseData.email,
+                    id: responseData.user.id,
+                    email: responseData.user.email,
+                    firstName: responseData.user.firstName,
+                    lastName: responseData.user.lastName,
                     token: responseData.token
                 }
             } else {
@@ -62,3 +70,36 @@ export const registerThunk = createAsyncThunk(
         }
     }
 )
+export const authThunk = createAsyncThunk(
+    'auth/Auth',
+    async (data) => {
+        try {
+            console.log(data)
+            const authString = `Bearer ${localStorage.getItem('token')}`
+            const response = await fetch(`${baseURl}/auth/auth`, {
+                headers: {
+                    "Authorization": authString
+                }
+            })
+            const responseData = await response.json()
+            console.log(responseData)
+            if (!responseData.error) {
+                localStorage.setItem('token', responseData.token)
+                return {
+                    id: responseData.user.id,
+                    email: responseData.user.email,
+                    firstName: responseData.user.firstName,
+                    lastName: responseData.user.lastName,
+                    token: responseData.token
+                }
+            } else {
+                localStorage.removeItem('token')
+            }
+
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+)
+
+
