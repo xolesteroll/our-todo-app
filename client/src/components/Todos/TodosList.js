@@ -49,10 +49,10 @@ const TodosList = () => {
         dispatch(restoreTodo({id, oldStatus}))
     }
 
-    const onChangeTodoStatusHandler = ({id, status, oldStatus}) => {
+    const onChangeTodoStatusHandler = ({id, newStatus, oldStatus}) => {
         dispatch(changeTodoStatus({
             id,
-            status,
+            newStatus,
             oldStatus
         }))
     }

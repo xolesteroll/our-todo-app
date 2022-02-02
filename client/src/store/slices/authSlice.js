@@ -13,6 +13,7 @@ const initialState = {
 }
 
 const authDataSetter = (state, payload) => {
+    debugger
     if (!payload.error) {
         state.email = payload.email
         state.token = payload.token

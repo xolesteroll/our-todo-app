@@ -16,9 +16,6 @@ const AddTodo = () => {
             {
                 todo: {
                     ...todo,
-                    status: 'active',
-                    oldStatus: 'active',
-                    author: userId
                 }
             }))
         navigate('/my-todos')

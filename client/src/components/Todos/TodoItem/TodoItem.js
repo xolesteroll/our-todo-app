@@ -17,6 +17,9 @@ const TodoItem = React.memo(({
                                  statusesList
                              }) => {
 
+    console.log(status, oldStatus, statusesList)
+    console.log(statusesList.find(s => s.id === status).color)
+
     const [showModal, setShowModal] = useState(false)
     const [editStatusMode, setEditStatusMode] = useState(false)
 
@@ -28,8 +31,7 @@ const TodoItem = React.memo(({
         if (changedStatus !== status) {
             onChangeTodoStatus({
                 id,
-                title,
-                status: changedStatus,
+                newStatus: changedStatus,
                 oldStatus
             })
         }

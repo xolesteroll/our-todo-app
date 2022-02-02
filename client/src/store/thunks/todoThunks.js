@@ -2,14 +2,23 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 
 const dbUrl = process.env.REACT_APP_FIREBASE_DATABASE_URL
 
+const baseUrl = process.env.REACT_APP_BASE_REST_API_URL
+
+const authString = `Bearer ${localStorage.getItem('token')}`
 
 export const fetchTodos = createAsyncThunk(
     'todos/fetchTodos',
     async (userId) => {
         try {
-            const response = await fetch(`${dbUrl}/todos.json`)
+            const response = await fetch(`${baseUrl}/todos/my-todos/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${authString}`
+                }
+            })
             const data = await response.json()
-            return {todos: data, userId}
+            return {todos: data.todos, userId}
         } catch (e) {
             console.log(e.message)
         }
@@ -20,11 +29,12 @@ export const addTodo = createAsyncThunk(
     'todos/addTodo',
     async ({todo}) => {
         try {
-            const response = await fetch(`${dbUrl}/todos.json`, {
+            const response = await fetch(`${baseUrl}/todos/add-todo`, {
                 method: 'POST',
                 body: JSON.stringify(todo),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `${authString}`
                 }
             })
             const responseData = await response.json()
@@ -41,19 +51,21 @@ export const addTodo = createAsyncThunk(
 
 export const changeTodoStatus = createAsyncThunk(
     'todos/changeStatus',
-    async ({id, status, oldStatus}) => {
+    async ({id, newStatus, oldStatus}) => {
         try {
-            await fetch(`${dbUrl}/todos/${id}.json`, {
-                method: 'PATCH',
+            await fetch(`${baseUrl}/todos/change-status`, {
+                method: 'POST',
                 body: JSON.stringify({
-                    oldStatus: oldStatus,
-                    status: status
+                    todoId: id,
+                    newStatus,
+                    oldStatus
                 }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `${authString}`
                 }
             })
-            return {id, status}
+            return {id, newStatus}
         } catch (e) {
             console.log(e.message)
         }
