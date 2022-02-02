@@ -39,21 +39,12 @@ const todosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        // onChangeStatus(state, {payload}) {
-        //     const [oldStatus, status] = payload
-        //     console.log(oldStatus, status)
-        //     state.quantity[`${oldStatus}`]--
-        //     state.quantity[`${status}`]++
-        // }
         setIsInitialFetch(state, {payload}) {
             state.isInitialFetch = payload
         },
         resetQty(state) {
             state.quantity = {
                 all: 0,
-                active: 0,
-                done: 0,
-                hold: 0,
                 deleted: 0
             }
         }
@@ -78,16 +69,17 @@ const todosSlice = createSlice({
                 state.quantity[t.status] = state.quantity[t.status] ?
                     state.quantity[t.status] + 1 : 1
 
-                state.quantity['all'] = t.status !==
-                'deleted' ? state.quantity['all'] + 1 :
-                    state.quantity['all']
+                state.quantity['all'] =
+                    t.status !== 'deleted' ?
+                        state.quantity['all'] + 1 :
+                        state.quantity['all']
 
                 loadedTodos.push({
                     id: t._id,
                     title: t.title,
                     description: t.description,
                     status: t.status,
-                    oldStatus:t.oldStatus,
+                    oldStatus: t.oldStatus,
                     author: t.author,
                     createdAt: t.createdAt
                 })
@@ -100,37 +92,42 @@ const todosSlice = createSlice({
             state.isFetching = true
         },
         [changeTodoStatus.fulfilled]: (state, {payload}) => {
-            debugger
             const todo = state.todos.find(t => t.id === payload.id)
+            if (todo.status === 'deleted') {
+                state.quantity.all += 1
+            }
+            if (payload.newStatus === 'deleted') {
+                state.quantity.all -= 1
+            }
             todo.oldStatus = todo.status
             todo.status = payload.newStatus
             state.quantity[todo.oldStatus] -= 1
-            state.quantity[payload.newStatus] += 1
+            state.quantity[payload.newStatus] = state.quantity[payload.newStatus] + 1 || 1
             state.isFetching = false
         },
-        [deleteTodo.pending]: (state) => {
-            state.isFetching = true
-        },
-        [deleteTodo.fulfilled]: (state, {payload}) => {
-            const todo = state.todos.find(t => t.id === payload.id)
-            todo.oldStatus = todo.status
-            todo.status = 'deleted'
-            state.quantity[todo.oldStatus] -= 1
-            state.quantity['deleted'] += 1
-            state.quantity['all'] -= 1
-            state.isFetching = false
-        },
-        [restoreTodo.pending]: (state) => {
-            state.isFetching = true
-        },
-        [restoreTodo.fulfilled]: (state, {payload}) => {
-            const todo = state.todos.find(t => t.id === payload.id)
-            todo.status = todo.oldStatus
-            state.quantity[todo.status] += 1
-            state.quantity['deleted'] -= 1
-            state.quantity['all'] += 1
-            state.isFetching = false
-        }
+        // [deleteTodo.pending]: (state) => {
+        //     state.isFetching = true
+        // },
+        // [deleteTodo.fulfilled]: (state, {payload}) => {
+        //     const todo = state.todos.find(t => t.id === payload.id)
+        //     todo.oldStatus = todo.status
+        //     todo.status = 'deleted'
+        //     state.quantity[todo.oldStatus] -= 1
+        //     state.quantity['deleted'] += 1
+        //     state.quantity['all'] -= 1
+        //     state.isFetching = false
+        // },
+        // [restoreTodo.pending]: (state) => {
+        //     state.isFetching = true
+        // },
+        // [restoreTodo.fulfilled]: (state, {payload}) => {
+        //     const todo = state.todos.find(t => t.id === payload.id)
+        //     todo.status = todo.oldStatus
+        //     state.quantity[todo.status] += 1
+        //     state.quantity['deleted'] -= 1
+        //     state.quantity['all'] += 1
+        //     state.isFetching = false
+        // }
     }
 })
 

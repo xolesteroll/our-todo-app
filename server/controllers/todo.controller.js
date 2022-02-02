@@ -55,19 +55,8 @@ class TodoController {
             }, {
                 new: true
             })
-            if (todo) {
-                return {
-                    success: true,
-                    message: `Status was successfully changed from ${status} to ${newStatus}`,
-                    todo
-                }
-            } else {
-                return {
-                    success: false,
-                    message: `Could not find todo`
-                }
 
-            }
+            return todo
 
         } catch (e) {
             return res.status(400).json(e)

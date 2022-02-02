@@ -50,7 +50,7 @@ router.post('/registration',
 
         } catch (e) {
             console.log(e)
-            res.send({error: "Server Error"})
+            return res.send({error: "Server Error"})
         }
     })
 
@@ -79,7 +79,7 @@ router.post('/login',
             })
         } catch (e) {
             console.log(e)
-            res.send({error: "Server Error"})
+             return res.send(e)
         }
     })
 
@@ -102,7 +102,7 @@ router.get('/auth', authMiddleware,
             })
         } catch (e) {
             console.log(e)
-            res.send({error: "Server Error"})
+            return res.send({error: "Server Error"})
         }
     })
 

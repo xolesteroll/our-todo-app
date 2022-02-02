@@ -42,11 +42,19 @@ const TodosList = () => {
     const statusesList = todosState.statuses
 
     const onRemoveTodoHandler = (id, status) => {
-        dispatch(deleteTodo({id, status}))
+        dispatch(changeTodoStatus({
+            id,
+            newStatus: 'deleted',
+            oldStatus: status
+        }))
     }
 
     const onRestoreTodoHandler = (id, oldStatus) => {
-        dispatch(restoreTodo({id, oldStatus}))
+        dispatch(changeTodoStatus({
+            id,
+            newStatus: oldStatus,
+            oldStatus: 'deleted'
+        }))
     }
 
     const onChangeTodoStatusHandler = ({id, newStatus, oldStatus}) => {

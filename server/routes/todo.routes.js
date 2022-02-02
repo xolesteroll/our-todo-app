@@ -21,7 +21,6 @@ router.get('/my-todos/:id', authMiddleware,
                 return res.status(200).json(response)
             } else {
                 return res.status(400).json(response)
-
             }
         } catch (e) {
             return res.status(400).json(e)
@@ -31,8 +30,12 @@ router.get('/my-todos/:id', authMiddleware,
 router.post('/change-status', authMiddleware,
     async (req, res) => {
         try {
-            const response = await TodosController.changeTodoStatus(req, res)
-            return res.json(response)
+            const todo = await TodosController.changeTodoStatus(req, res)
+            if(todo) {
+                return res.status(200).json(todo)
+            } else {
+                return res.status(401).json({succes: false, message: 'Server error'})
+            }
         } catch (e) {
             return res.status(400).json(e)
         }

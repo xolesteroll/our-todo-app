@@ -72,48 +72,48 @@ export const changeTodoStatus = createAsyncThunk(
     }
 )
 
-export const deleteTodo = createAsyncThunk(
-    'todos/deleteTodo',
-    async ({id, status}) => {
-        try {
-            await fetch(`${dbUrl}/todos/${id}.json`, {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    oldStatus: status,
-                    status: 'deleted',
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            return {id}
-        } catch (e) {
-            console.log(e.message)
-        }
-    }
-)
-
-export const restoreTodo = createAsyncThunk(
-    'todos/restoreTodo',
-    async ({id, oldStatus}) => {
-        try {
-            await fetch(`${dbUrl}/todos/${id}.json`, {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    status: oldStatus,
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            return {id, oldStatus}
-        } catch (e) {
-            console.log(e.message)
-        }
-    }
-
-)
-
-
+// export const deleteTodo = createAsyncThunk(
+//     'todos/deleteTodo',
+//     async ({id, status}) => {
+//         try {
+//             await fetch(`${dbUrl}/todos/${id}.json`, {
+//                 method: 'PATCH',
+//                 body: JSON.stringify({
+//                     oldStatus: status,
+//                     status: 'deleted',
+//                 }),
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 }
+//             })
+//             return {id}
+//         } catch (e) {
+//             console.log(e.message)
+//         }
+//     }
+// )
+//
+// export const restoreTodo = createAsyncThunk(
+//     'todos/restoreTodo',
+//     async ({id, oldStatus}) => {
+//         try {
+//             await fetch(`${dbUrl}/todos/${id}.json`, {
+//                 method: 'PATCH',
+//                 body: JSON.stringify({
+//                     status: oldStatus,
+//                 }),
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 }
+//             })
+//             return {id, oldStatus}
+//         } catch (e) {
+//             console.log(e.message)
+//         }
+//     }
+//
+// )
+//
+//
 
 
