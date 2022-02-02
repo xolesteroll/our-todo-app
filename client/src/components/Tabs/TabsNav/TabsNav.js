@@ -3,11 +3,15 @@ import React, {useEffect, useState} from 'react';
 import c from './TabsNav.module.css'
 import {useSelector} from "react-redux";
 import TabsNavItem from "./TabsNavItem/TabsNavItem";
+import {useParams} from "react-router-dom";
 
 const TabsNav = () => {
     const statusesList = useSelector(state => state.todos.statuses)
     const todosQuantity = useSelector(state => state.todos.quantity)
     const [navItemsData, setNavItemsData] = useState([])
+
+    const params = useParams()
+    console.log(params)
 
     useEffect(() => {
         const navItemsArray = [
@@ -16,14 +20,14 @@ const TabsNav = () => {
                 label: 'All',
                 color: 'black',
                 qty: todosQuantity.all,
-                isItemActive: true
+                isItemActive: !params.statusFilter || params.statusFilter === 'all'
             }
         ]
         statusesList.forEach(s => {
             navItemsArray.push({
                 ...s,
                 qty: todosQuantity[s.id],
-                isItemActive: false
+                isItemActive: params.statusFilter === `${s.id}`
             })
         })
         setNavItemsData(navItemsArray)
