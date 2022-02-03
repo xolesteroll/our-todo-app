@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import formatDate from "../../../../helpers/formatDateHelper";
+import formatDate from "../../../../helpers/formatDateForInputValueHelper";
 
 import c from './AddTodoForm.module.css'
 import MyButton from "../../../UI/MyButton/MyButton";
@@ -19,8 +19,8 @@ const AddTodoForm = ({onAddTodoHandler}) => {
         console.log(descr)
         setDescription(descr)
     }
-    const onFinishDateHandler = (e) => {
-        const date = new Date(e.target.value).getTime()
+    const onFinishDateChangeHandler = (e) => {
+        const date = e.target.value
         console.log(date)
         setFinishDate(date)
     }
@@ -29,10 +29,11 @@ const AddTodoForm = ({onAddTodoHandler}) => {
         e.preventDefault()
         onAddTodoHandler({
             title,
-            description
+            description,
         })
         setTitle('')
         setDescription('')
+        setFinishDate(formatDate(new Date().toLocaleDateString()))
     }
 
 
@@ -44,7 +45,7 @@ const AddTodoForm = ({onAddTodoHandler}) => {
                 <label htmlFor="description">Describe the Todo</label>
                 <textarea name="description" value={description} onChange={onDescriptionChangeHandler} type="text"/>
                 <label htmlFor="finish-date">Pick finish date</label>
-                <input name="finish-date" value={finishDate} onChange={onFinishDateHandler} type="date"/>
+                <input name="finish-date" value={finishDate} onChange={onFinishDateChangeHandler} type="date"/>
             </div>
             <div className={c.formControls}>
                 <MyButton type="submit" text="Add Todo" color="#ffffff" hoverColor="#000000" bgColor="#6fdd8f" paddingOnHover/>
