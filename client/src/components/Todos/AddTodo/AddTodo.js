@@ -5,6 +5,8 @@ import {addTodo} from "../../../store/thunks/todoThunks";
 import {useNavigate} from "react-router-dom";
 import AddTodoForm from "./AddTodoForm/AddTodoForm";
 
+import c from "./AddTodo.module.css"
+
 const AddTodo = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -22,7 +24,9 @@ const AddTodo = () => {
     }
 
     return (
+        <div className={c.addTodoFormWrapper}>
         <AddTodoForm onAddTodoHandler={onAddTodoHandler}/>
+        </div>
     );
 };
 

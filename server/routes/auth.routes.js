@@ -35,7 +35,7 @@ router.post('/registration',
                 lastName
             })
             await user.save()
-            const token = await jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
+            const token = await jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY, {expiresIn: "24h"})
             return res.json({
                 message: "User was registered",
                 token,
@@ -57,7 +57,6 @@ router.post('/registration',
 router.post('/login',
     async (req, res) => {
         try {
-            console.log(req.body)
             const {email, password} = req.body
             const user = await User.findOne({email})
             if (!user) {
@@ -67,7 +66,7 @@ router.post('/login',
             if (!isPassValid) {
                 return res.status(400).json({error: "Entered password is incorrect"})
             }
-            const token = await jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
+            const token = await jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY, {expiresIn: "24h"})
             return res.json({
                 token,
                 user: {
@@ -89,8 +88,7 @@ router.get('/auth', authMiddleware,
         try {
             console.log(req.user.id)
             const user = await User.findOne({_id: req.user.id})
-            console.log(user)
-            const token = await jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
+            const token = await jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY, {expiresIn: "24h"})
             return res.json({
                 token,
                 user: {

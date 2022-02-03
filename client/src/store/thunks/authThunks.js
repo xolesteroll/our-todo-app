@@ -5,8 +5,6 @@ const baseURl = process.env.REACT_APP_BASE_REST_API_URL
 export const loginThunk = createAsyncThunk(
     'auth/Login',
     async (data) => {
-        console.log(baseURl)
-
         const response = await fetch(`${baseURl}/auth/login`, {
             method: 'POST',
             body: JSON.stringify({
@@ -19,7 +17,7 @@ export const loginThunk = createAsyncThunk(
         })
         const responseData = await response.json()
         console.log(responseData)
-        if (!responseData.error) {
+        if (responseData.token) {
             localStorage.setItem('token', responseData.token)
             return {
                 id: responseData.user.id,
@@ -78,12 +76,12 @@ export const authThunk = createAsyncThunk(
             const authString = `Bearer ${localStorage.getItem('token')}`
             const response = await fetch(`${baseURl}/auth/auth`, {
                 headers: {
+                    "Content-Type": "application/json",
                     "Authorization": authString
                 }
             })
             const responseData = await response.json()
-            console.log(responseData)
-            if (!responseData.message) {
+            if (responseData.message !== 'jwt expired' && responseData.message !== 'jwt malformed') {
                 localStorage.setItem('token', responseData.token)
                 return {
                     id: responseData.user.id,
@@ -94,10 +92,13 @@ export const authThunk = createAsyncThunk(
                 }
             } else {
                 localStorage.removeItem('token')
+                return {
+                    error: responseData.message
+                }
             }
 
         } catch (e) {
-            console.log(e.message)
+            console.log(e)
         }
     }
 )

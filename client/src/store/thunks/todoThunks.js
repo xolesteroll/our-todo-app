@@ -18,7 +18,12 @@ export const fetchTodos = createAsyncThunk(
                 }
             })
             const data = await response.json()
-            return {todos: data.todos, userId}
+            console.log(data)
+            if (data.success) {
+                return {todos: data.todos, userId}
+            } else {
+                return {error: data.message}
+            }
         } catch (e) {
             console.log(e.message)
         }

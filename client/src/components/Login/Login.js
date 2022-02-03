@@ -6,6 +6,8 @@ import {loginThunk, registerThunk} from "../../store/thunks/authThunks";
 import Modal from "../UI/Modal/Modal";
 import LoginForm from "./LoginForm/LoginForm";
 
+import c from "./Login.module.css"
+
 const Login = () => {
         const [isLogin, setIsLogin] = useState(true)
 
@@ -32,11 +34,14 @@ const Login = () => {
         return (
             <>
                 {error && <Modal onClose={onCloseModal} message={error}/>}
-                <LoginForm
-                    onFormSubmit={onLoginSubmitHandler}
-                    isLogin={isLogin}
-                    onChangeIsLogin={onChangeIsLogin}
-                />
+                <div className={c.loginFormWrapper}>
+                    <LoginForm
+                        onFormSubmit={onLoginSubmitHandler}
+                        isLogin={isLogin}
+                        onChangeIsLogin={onChangeIsLogin}
+                    />
+                </div>
+
             </>
         );
     }

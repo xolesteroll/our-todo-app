@@ -3,6 +3,7 @@ import ModalOverlay from "./ModalOverlay/ModalOverlay";
 
 import c from './Modal.module.css'
 import {createPortal} from "react-dom";
+import MyButton from "../MyButton/MyButton";
 
 const Modal = ({message, onClose, onSubmit, submittable}) => {
     const portalDestination = document.getElementById('modal-root')
@@ -12,13 +13,31 @@ const Modal = ({message, onClose, onSubmit, submittable}) => {
         createPortal(<ModalOverlay onModalClose={onClose}>
             <div className={c.modal}>
                 <p>{message}</p>
-                {!submittable && <button onClick={onClose}>close</button>}
-                {submittable &&
-                    <>
-                        <button onClick={onSubmit}>Submit</button>
-                        <button onClick={onClose}>Cancel</button>
-                    </>
-                }
+                <div className={c.modalControls}>
+                    {!submittable && <MyButton
+                        onClickHandler={onClose}
+                        text="OK"
+                        color="#ffffff"
+                        hoverColor="#000000"
+                        bgColor="#6fdd8f"
+                        paddingOnHover/>}
+                    {submittable && <>
+                        <MyButton
+                            onClickHandler={onSubmit}
+                            text="Confirm"
+                            color="#ffffff"
+                            hoverColor="#000000"
+                            bgColor="#6fdd8f"
+                            paddingOnHover/>
+                        <MyButton
+                            onClickHandler={onClose}
+                            text="Cancel"
+                            color="#ffffff"
+                            hoverColor="#000000"
+                            bgColor="red"
+                            paddingOnHover/>
+                    </>}
+                </div>
             </div>
         </ModalOverlay>, portalDestination)
     );

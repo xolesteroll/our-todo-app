@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import TodoItem from "./TodoItem/TodoItem";
@@ -6,6 +6,7 @@ import {Link, useParams} from "react-router-dom";
 import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store/thunks/todoThunks";
 
 import s from './TodosList.module.css'
+import Modal from "../UI/Modal/Modal";
 
 
 const TodosList = () => {
@@ -13,12 +14,13 @@ const TodosList = () => {
 
     const todosState = useSelector(state => state.todos)
     const userId = useSelector(state => state.auth.id)
+    const error = useSelector(state => state.todos.error)
+    const [modalVisible, setModalVisible] = useState(!!error)
 
     const urlParams = useParams()
     const statusFilter = urlParams.statusFilter
 
 
-    console.log(urlParams)
     useEffect(() => {
         if (todosState.isInitialFetch) {
             dispatch(fetchTodos(userId))
@@ -65,6 +67,10 @@ const TodosList = () => {
         }))
     }
 
+    const onModalCloseHandler = () => {
+        setModalVisible(false)
+    }
+
     const filteredTodos = todos.filter(t => t.author === userId)
 
     const todosList = filteredTodos.length > 0 ? filteredTodos.map(t => {
@@ -92,6 +98,7 @@ const TodosList = () => {
             <ul className={s.todoList}>
                 {todosList}
             </ul>
+            {modalVisible && <Modal message={error} onClose={onModalCloseHandler}/>}
         </>
     );
 };

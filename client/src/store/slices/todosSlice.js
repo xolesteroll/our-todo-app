@@ -31,7 +31,8 @@ const initialState = {
         }
     ],
     isFetching: false,
-    isInitialFetch: true
+    isInitialFetch: true,
+    error: null
 }
 
 
@@ -65,29 +66,38 @@ const todosSlice = createSlice({
         },
         [fetchTodos.fulfilled]: (state, {payload}) => {
             const loadedTodos = []
-            const todos = payload.todos
-            todos.forEach(t => {
-                state.quantity[t.status] = state.quantity[t.status] ?
-                    state.quantity[t.status] + 1 : 1
+            if (payload.todos) {
+                const todos = payload.todos
+                todos.forEach(t => {
+                    state.quantity[t.status] = state.quantity[t.status] ?
+                        state.quantity[t.status] + 1 : 1
 
-                state.quantity['all'] =
-                    t.status !== 'deleted' ?
-                        state.quantity['all'] + 1 :
-                        state.quantity['all']
+                    state.quantity['all'] =
+                        t.status !== 'deleted' ?
+                            state.quantity['all'] + 1 :
+                            state.quantity['all']
 
-                loadedTodos.push({
-                    id: t._id,
-                    title: t.title,
-                    description: t.description,
-                    status: t.status,
-                    oldStatus: t.oldStatus,
-                    author: t.author,
-                    createdAt: t.createdAt
+                    loadedTodos.push({
+                        id: t._id,
+                        title: t.title,
+                        description: t.description,
+                        status: t.status,
+                        oldStatus: t.oldStatus,
+                        author: t.author,
+                        createdAt: t.createdAt
+                    })
                 })
-            })
-            state.todos = loadedTodos
-            state.isFetching = false
-            state.isInitialFetch = false
+                state.todos = loadedTodos
+                state.isFetching = false
+                state.isInitialFetch = false
+            } else {
+                console.log(payload)
+                state.error = payload.error
+                localStorage.removeItem('token')
+                state.isFetching = false
+                state.isInitialFetch = false
+            }
+
         },
         [changeTodoStatus.pending]: (state) => {
             state.isFetching = true

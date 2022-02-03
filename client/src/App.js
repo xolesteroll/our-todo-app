@@ -17,18 +17,14 @@ function App() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
+        if (localStorage.getItem('token') && !isAuth) {
             dispatch(authThunk())
         }
     }, [])
 
-    if (isFetching) {
-        return <Spinner/>
-    }
-
     return (
         <Layout>
-            <Routes>
+            {isFetching ? <Spinner/> : <Routes>
                 {isAuth &&
                 <>
                     <Route path="/" element={<Homepage/>}/>
@@ -42,7 +38,8 @@ function App() {
                     <Route path="/login" element={<Login/>}/>}
                 </>}
                 <Route path="*" element={isAuth ? <NotFound/> : <Login/>}/>
-            </Routes>
+            </Routes>}
+
         </Layout>
     );
 }

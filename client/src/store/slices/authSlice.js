@@ -21,7 +21,12 @@ const authDataSetter = (state, payload) => {
         state.lastName = payload.lastName
         state.isAuth = true
     } else {
-        state.error = payload.error
+        if (payload.error === "jwt expired") {
+            state.error = "Your session expired, please login"
+        } else {
+            state.error = payload.error
+        }
+
     }
 }
 
