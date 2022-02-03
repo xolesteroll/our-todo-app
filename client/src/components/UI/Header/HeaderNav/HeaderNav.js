@@ -3,18 +3,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {authActions} from "../../../../store/slices/authSlice";
 import {todosActions} from "../../../../store/slices/todosSlice";
 import c from "../Header.module.css";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import MyButton from "../../MyButton/MyButton";
 
 const HeaderNav = () => {
     const isAuth = useSelector(state => state.auth.isAuth)
-
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const onLogoutHandler = () => {
         dispatch(authActions.logout())
         dispatch(todosActions.setIsInitialFetch(true))
         dispatch(todosActions.resetQty())
+        navigate("/login")
     }
 
     const activeClassFunc = ({isActive}) => `${c.headerNavLink} ${isActive ? c.active : ""}`

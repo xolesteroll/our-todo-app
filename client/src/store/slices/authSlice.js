@@ -21,7 +21,7 @@ const authDataSetter = (state, payload) => {
         state.lastName = payload.lastName
         state.isAuth = true
     } else {
-        state.error = payload.error.message
+        state.error = payload.error
     }
 }
 

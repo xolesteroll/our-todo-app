@@ -38,9 +38,15 @@ export const addTodo = createAsyncThunk(
                 }
             })
             const responseData = await response.json()
+            const todoObj = responseData.todo
             return {
-                id: responseData.name,
-                ...todo
+                id: todoObj._id,
+                title: todoObj.title,
+                description: todoObj.description,
+                status: todoObj.status,
+                oldStatus: todoObj.oldStatus,
+                author: todoObj.author,
+                createdAt: todoObj.createdAt,
             }
         } catch (e) {
             console.log(e.message)

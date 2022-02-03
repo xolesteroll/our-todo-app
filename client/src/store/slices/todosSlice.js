@@ -54,6 +54,7 @@ const todosSlice = createSlice({
             state.isFetching = true
         },
         [addTodo.fulfilled]: (state, {payload}) => {
+            debugger
             state.todos.push(payload)
             state.quantity['all'] += 1
             state.quantity['active'] += 1

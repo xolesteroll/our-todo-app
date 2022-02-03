@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 
 import Layout from "./components/UI/Layout/Layout";
 import {Navigate, Route, Routes} from "react-router-dom";
@@ -17,25 +17,31 @@ function App() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (localStorage.getItem('token') && !isAuth) {
+        if (localStorage.getItem('token')) {
             dispatch(authThunk())
         }
-    }, [dispatch, isAuth])
+    }, [])
 
     if (isFetching) {
-        return <Spinner />
+        return <Spinner/>
     }
 
     return (
         <Layout>
             <Routes>
-                    <Route path="/" element={isAuth ? <Homepage/> : <Navigate to="/login"/>}/>
-                    <Route path="/login" element={!isAuth ? <Login/> : <Homepage/>}/>
-                    <Route path="/add-new" element={isAuth ? <NewTodo/> : <Navigate to="/login"/>}/>
-                    <Route path="/my-todos" element={isAuth ? <MyTodos/> : <Navigate to="/login"/>}>
-                        <Route path=":statusFilter" element={<MyTodos/>} />
-                    </Route >
-                    <Route path="*" element={isAuth ? <NotFound/> : <Navigate to="/login"/>}/>
+                {isAuth &&
+                <>
+                    <Route path="/" element={<Homepage/>}/>
+                    <Route path="/add-new" element={<NewTodo/>}/>
+                    <Route path="/my-todos" element={<MyTodos/>}>
+                        <Route path=":statusFilter" element={<MyTodos/>}/>
+                    </Route>
+                </>}
+                {!isAuth &&
+                <>
+                    <Route path="/login" element={<Login/>}/>}
+                </>}
+                <Route path="*" element={isAuth ? <NotFound/> : <Login/>}/>
             </Routes>
         </Layout>
     );

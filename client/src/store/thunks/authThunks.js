@@ -83,7 +83,7 @@ export const authThunk = createAsyncThunk(
             })
             const responseData = await response.json()
             console.log(responseData)
-            if (!responseData.error) {
+            if (!responseData.message) {
                 localStorage.setItem('token', responseData.token)
                 return {
                     id: responseData.user.id,
