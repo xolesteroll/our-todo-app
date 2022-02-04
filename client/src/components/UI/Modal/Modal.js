@@ -5,7 +5,7 @@ import c from './Modal.module.css'
 import {createPortal} from "react-dom";
 import MyButton from "../MyButton/MyButton";
 
-const Modal = ({message, onClose, onSubmit, submittable}) => {
+const Modal = ({message, onClose, onSubmit, submittable, submitBtnText, cancelBtnText}) => {
     const portalDestination = document.getElementById('modal-root')
 
 
@@ -23,15 +23,23 @@ const Modal = ({message, onClose, onSubmit, submittable}) => {
                         paddingOnHover/>}
                     {submittable && <>
                         <MyButton
+                            styles={{
+                                position: 'absolute',
+                                left: '50px'
+                            }}
                             onClickHandler={onSubmit}
-                            text="Confirm"
+                            text={submitBtnText || "Confirm"}
                             color="#ffffff"
                             hoverColor="#000000"
                             bgColor="#6fdd8f"
                             paddingOnHover/>
                         <MyButton
+                            styles={{
+                                position: 'absolute',
+                                right: '50px'
+                            }}
                             onClickHandler={onClose}
-                            text="Cancel"
+                            text={cancelBtnText || "Cancel"}
                             color="#ffffff"
                             hoverColor="#000000"
                             bgColor="red"

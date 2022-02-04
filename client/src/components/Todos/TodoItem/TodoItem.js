@@ -2,23 +2,21 @@ import React, {useState} from 'react';
 import Modal from "../../UI/Modal/Modal";
 
 import c from './TodoItem.module.css'
+import MyButton from "../../UI/MyButton/MyButton";
 
 const TodoItem = React.memo(({
                                  id,
                                  title,
                                  description,
-                                 author,
                                  deleted,
                                  status,
                                  oldStatus,
+                                 remainingTime,
                                  onRemoveTodo,
                                  onRestoreTodo,
                                  onChangeTodoStatus,
                                  statusesList
                              }) => {
-
-    console.log(status, oldStatus, statusesList)
-    console.log(statusesList.find(s => s.id === status).color)
 
     const [showModal, setShowModal] = useState(false)
     const [editStatusMode, setEditStatusMode] = useState(false)
@@ -49,9 +47,31 @@ const TodoItem = React.memo(({
     const currentStatusColor = statusesList.find(s => s.id === status).color
     const oldStatusColor = statusesList.find(s => s.id === oldStatus).color
 
-    const actionBtn = !deleted ?
-        <button className={`${c.actionBtn} ${c.deleteBtn}`} onClick={modalOpenHandler}>delete</button> :
-        <button className={`${c.actionBtn} ${c.restoreBtn}`} onClick={modalOpenHandler}>restore</button>
+    const actionBtns = !deleted ?
+        <>
+            <MyButton
+                className={`${c.actionBtn}`}
+                onClickHandler={() => {}}
+                text="edit"
+                bgColor="blue"
+                hoverColor="#000000"
+            />
+            <MyButton
+                className={`${c.actionBtn}`}
+                onClickHandler={modalOpenHandler}
+                text="delete"
+                bgColor="red"
+                hoverColor="#000000"
+            />
+        </>
+         :
+        <MyButton
+            className={`${c.actionBtn} ${c.restoreBtn}`}
+            onClickHandler={modalOpenHandler}
+            text="restore"
+            bgColor="green"
+            hoverColor="#000000"
+        />
 
     return (
         <>
@@ -62,13 +82,24 @@ const TodoItem = React.memo(({
                 onClose={modalCloseHandler}
             />}
             <li className={c.listItem}>
-                <h3>{title}</h3>
-                <p>{description}</p>
+                <h3 className={c.listItemTitle}>{title}</h3>
+                <p className={c.listItemDescription}>{description}</p>
+                {
+                    !deleted && <span className={c.timeCounter}>
+                    {`Time left: ${remainingTime.days} days and ${remainingTime.hours} hours`}
+                </span>
+                }
                 <div onDoubleClick={!deleted ? onDoubleClickHandler : null}>
-                    {!editStatusMode && !deleted &&
-                    <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
+                    {
+                        (!editStatusMode && !deleted) &&
+                            <>
+                                <span className={c.statusBar} style={{backgroundColor: currentStatusColor}}>
                     {status}
-                </span>}
+                </span>
+                                <span className={c.listItemPrompt}>{" -Double click to change status"}</span>
+                            </>
+
+                    }
                     {/*//Status section on deleted items*/}
                     {!editStatusMode && deleted &&
                     <>
@@ -77,6 +108,9 @@ const TodoItem = React.memo(({
                 {oldStatus}
                     </span>
                         <span> status before removal</span>
+                        <span className={c.timeCounter}>
+                            {`Had ${remainingTime.days} days left until finish`}
+                        </span>
                     </>}
                     {editStatusMode &&
                     <div className={c.statusControls}>
@@ -96,7 +130,9 @@ const TodoItem = React.memo(({
                     </div>
                     }
                 </div>
-                {actionBtn}
+                <div className={c.listItemControls}>
+                    {actionBtns}
+                </div>
             </li>
         </>
     )

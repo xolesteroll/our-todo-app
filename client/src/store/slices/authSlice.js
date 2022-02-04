@@ -53,6 +53,7 @@ const authSlice = createSlice({
             state.isFetching = true
         },
         [loginThunk.fulfilled]: (state, {payload}) => {
+
             authDataSetter(state, payload)
             state.isFetching = false
         },
@@ -63,7 +64,7 @@ const authSlice = createSlice({
             authDataSetter(state, payload)
             state.isFetching = false
         },
-        [authThunk.pending]: (state) => {
+        [authThunk.pending]: (state, {payload}) => {
             state.isFetching = true
         },
         [authThunk.fulfilled]: (state, {payload}) => {

@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import TodoItem from "./TodoItem/TodoItem";
 import {Link, useParams} from "react-router-dom";
 import {changeTodoStatus, deleteTodo, fetchTodos, restoreTodo} from "../../store/thunks/todoThunks";
+import formatDateForDaysCounter from "../../helpers/formatDateForDaysCounter";
 
 import s from './TodosList.module.css'
 import Modal from "../UI/Modal/Modal";
@@ -74,6 +75,8 @@ const TodosList = () => {
     const filteredTodos = todos.filter(t => t.author === userId)
 
     const todosList = filteredTodos.length > 0 ? filteredTodos.map(t => {
+        const remainingTime = formatDateForDaysCounter((+t.finishDate - +t.createdAt))
+        console.log(remainingTime)
         return <TodoItem
             key={t.id}
             id={t.id}
@@ -82,6 +85,7 @@ const TodosList = () => {
             oldStatus={t.oldStatus}
             title={t.title}
             author={t.author}
+            remainingTime={remainingTime}
             description={t.description}
             onRemoveTodo={onRemoveTodoHandler}
             onRestoreTodo={onRestoreTodoHandler}

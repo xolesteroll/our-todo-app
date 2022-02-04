@@ -1,15 +1,14 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-const dbUrl = process.env.REACT_APP_FIREBASE_DATABASE_URL
 
 const baseUrl = process.env.REACT_APP_BASE_REST_API_URL
 
-const authString = `Bearer ${localStorage.getItem('token')}`
 
 export const fetchTodos = createAsyncThunk(
     'todos/fetchTodos',
     async (userId) => {
         try {
+            const authString = `Bearer ${localStorage.getItem('token')}`
             const response = await fetch(`${baseUrl}/todos/my-todos/${userId}`, {
                 method: 'GET',
                 headers: {
@@ -18,14 +17,15 @@ export const fetchTodos = createAsyncThunk(
                 }
             })
             const data = await response.json()
-            console.log(data)
             if (data.success) {
                 return {todos: data.todos, userId}
             } else {
                 return {error: data.message}
             }
         } catch (e) {
-            console.log(e.message)
+            return {
+                error: "Something went wrong, try again later"
+            }
         }
     }
 )
@@ -34,6 +34,7 @@ export const addTodo = createAsyncThunk(
     'todos/addTodo',
     async ({todo}) => {
         try {
+            const authString = `Bearer ${localStorage.getItem('token')}`
             const response = await fetch(`${baseUrl}/todos/add-todo`, {
                 method: 'POST',
                 body: JSON.stringify(todo),
@@ -52,9 +53,12 @@ export const addTodo = createAsyncThunk(
                 oldStatus: todoObj.oldStatus,
                 author: todoObj.author,
                 createdAt: todoObj.createdAt,
+                finishDate: todoObj.finishDate
             }
         } catch (e) {
-            console.log(e.message)
+            return {
+                error: "Something went wrong, please try again later"
+            }
         }
 
     }
@@ -64,6 +68,7 @@ export const changeTodoStatus = createAsyncThunk(
     'todos/changeStatus',
     async ({id, newStatus, oldStatus}) => {
         try {
+            const authString = `Bearer ${localStorage.getItem('token')}`
             await fetch(`${baseUrl}/todos/change-status`, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -78,7 +83,9 @@ export const changeTodoStatus = createAsyncThunk(
             })
             return {id, newStatus}
         } catch (e) {
-            console.log(e.message)
+            return {
+                error: "Something went wrong, please try again later"
+            }
         }
     }
 )

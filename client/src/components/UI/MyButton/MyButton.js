@@ -2,30 +2,33 @@ import React, {useState} from 'react';
 
 import c from './Mybutton.module.css'
 
-const MyButton = ({text, bgColor, color, hoverColor, type, onClickHandler, paddingOnHover}) => {
+const MyButton = ({className, styles, text, bgColor, color, hoverColor, type, onClickHandler, paddingOnHover}) => {
     const [style, setStyle] = useState({
-        color,
-        backgroundColor: bgColor || "white",
+        color: color || "white",
+        backgroundColor: bgColor || "green",
+        ...styles
     })
 
     const colorOnHoverHandler = () => {
-        setStyle({
-            color,
-            backgroundColor: hoverColor || "white"
-        })
+        setStyle(prevState => ({
+            ...prevState,
+            color: color || "white",
+            backgroundColor: hoverColor || "green",
+        }))
     }
 
     const colorOnUnhoverHAndler = () => {
-        setStyle({
-            color,
-            backgroundColor: bgColor || "white"
-        })
+        setStyle(prevState => ({
+            ...prevState,
+            color: color || "white",
+            backgroundColor: bgColor || "green",
+        }))
     }
 
     return (
         <button
             onClick={onClickHandler ? onClickHandler : null}
-            className={`${c.myButton} ${paddingOnHover ? c.paddingAnimated : ''}`}
+            className={`${c.myButton} ${paddingOnHover ? c.paddingAnimated : ''} ${className}`}
             onMouseEnter={colorOnHoverHandler}
             onMouseLeave={colorOnUnhoverHAndler}
             type={type ? type : 'button'}

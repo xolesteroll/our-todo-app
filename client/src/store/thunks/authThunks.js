@@ -5,30 +5,38 @@ const baseURl = process.env.REACT_APP_BASE_REST_API_URL
 export const loginThunk = createAsyncThunk(
     'auth/Login',
     async (data) => {
-        const response = await fetch(`${baseURl}/auth/login`, {
-            method: 'POST',
-            body: JSON.stringify({
-                email: data.email,
-                password: data.password
-            }),
-            headers: {
-                "Content-Type": "application/json"
+        try {
+            const response = await fetch(`${baseURl}/auth/login`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: data.email,
+                    password: data.password
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            const responseData = await response.json()
+            if (responseData.token) {
+                localStorage.setItem('token', responseData.token)
+                return {
+                    id: responseData.user.id,
+                    email: responseData.user.email,
+                    firstName: responseData.user.firstName,
+                    lastName: responseData.user.lastName,
+                    token: responseData.token
+                }
+            } else {
+                return {
+                    error: "Server is unavailable"
+                }
             }
-        })
-        const responseData = await response.json()
-        console.log(responseData)
-        if (responseData.token) {
-            localStorage.setItem('token', responseData.token)
+        } catch (e) {
             return {
-                id: responseData.user.id,
-                email: responseData.user.email,
-                firstName: responseData.user.firstName,
-                lastName: responseData.user.lastName,
-                token: responseData.token
+                error: "Something went wrong"
             }
-        } else {
-            return responseData
         }
+
     }
 )
 
@@ -36,7 +44,6 @@ export const registerThunk = createAsyncThunk(
     'auth/Register',
     async (data) => {
         try {
-            console.log(data)
             const response = await fetch(`${baseURl}/auth/registration`, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -60,11 +67,15 @@ export const registerThunk = createAsyncThunk(
                     token: responseData.token
                 }
             } else {
-                return responseData
+                return {
+                    error: "Something went wrong, try again later"
+                }
             }
 
         } catch (e) {
-            console.log(e.message)
+            return {
+                error: "Server is unavailable"
+            }
         }
     }
 )
@@ -72,12 +83,12 @@ export const authThunk = createAsyncThunk(
     'auth/Auth',
     async (data) => {
         try {
-            console.log(data)
             const authString = `Bearer ${localStorage.getItem('token')}`
             const response = await fetch(`${baseURl}/auth/auth`, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": authString
+                    "Authorization": authString,
+                    "Access-Control-Allow-Origin": "http://localhost:3000"
                 }
             })
             const responseData = await response.json()
@@ -98,7 +109,9 @@ export const authThunk = createAsyncThunk(
             }
 
         } catch (e) {
-            console.log(e)
+            return {
+                error: "Server is unavailable"
+            }
         }
     }
 )

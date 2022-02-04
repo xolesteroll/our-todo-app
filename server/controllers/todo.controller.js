@@ -3,12 +3,13 @@ const Todo = require('../models/Todo')
 class TodoController {
     async addTodo(req, res) {
         try {
-            const {title, description} = req.body
+            const {title, description, finishDate} = req.body
             const date = Date.now()
             const todo = new Todo({
                 title,
                 description,
                 createdAt: date,
+                finishDate,
                 author: req.user.id,
                 status: "active",
                 oldStatus: "active"
@@ -19,7 +20,9 @@ class TodoController {
                 todo
             }
         } catch (e) {
-            return res.status(400).json(e)
+            return {
+                error: e.message
+            }
         }
     }
 
@@ -40,7 +43,9 @@ class TodoController {
             }
 
         } catch (e) {
-            return res.status(400).json(e)
+            return {
+                error: e.message
+            }
         }
 
     }
@@ -48,7 +53,6 @@ class TodoController {
     async changeTodoStatus(req, res) {
         try {
             const {todoId, oldStatus, newStatus} = req.body
-            console.log(todoId, oldStatus, newStatus)
             const todo = await Todo.findByIdAndUpdate(todoId, {
                 oldStatus: oldStatus,
                 status: newStatus
@@ -59,12 +63,13 @@ class TodoController {
             return todo
 
         } catch (e) {
-            return res.status(400).json(e)
+            return {
+                error: e.message
+            }
         }
     }
 }
 
 module.exports = new TodoController()
 
-console.log(Date.now())
 

@@ -48,6 +48,12 @@ const todosSlice = createSlice({
                 all: 0,
                 deleted: 0
             }
+        },
+        setTodosError(state, {payload}) {
+            state.error = payload
+        },
+        resetTodosError(state) {
+            state.error = null
         }
     },
     extraReducers: {
@@ -56,10 +62,16 @@ const todosSlice = createSlice({
         },
         [addTodo.fulfilled]: (state, {payload}) => {
             debugger
-            state.todos.push(payload)
-            state.quantity['all'] += 1
-            state.quantity['active'] += 1
-            state.isFetching = false
+            if (!payload.error) {
+                state.todos.push(payload)
+                state.quantity['all'] += 1
+                state.quantity['active'] += 1
+                state.isFetching = false
+            } else {
+                state.error = payload.error
+                state.isFetching = false
+            }
+
         },
         [fetchTodos.pending]: (state) => {
             state.isFetching = true
@@ -84,14 +96,14 @@ const todosSlice = createSlice({
                         status: t.status,
                         oldStatus: t.oldStatus,
                         author: t.author,
-                        createdAt: t.createdAt
+                        createdAt: t.createdAt,
+                        finishDate: t.finishDate
                     })
                 })
                 state.todos = loadedTodos
                 state.isFetching = false
                 state.isInitialFetch = false
             } else {
-                console.log(payload)
                 state.error = payload.error
                 localStorage.removeItem('token')
                 state.isFetching = false
@@ -103,18 +115,25 @@ const todosSlice = createSlice({
             state.isFetching = true
         },
         [changeTodoStatus.fulfilled]: (state, {payload}) => {
-            const todo = state.todos.find(t => t.id === payload.id)
-            if (todo.status === 'deleted') {
-                state.quantity.all += 1
+            if(!payload.error) {
+                const todo = state.todos.find(t => t.id === payload.id)
+                todo.oldStatus = todo.status
+                todo.status = payload.newStatus
+                state.quantity[todo.oldStatus] -= 1
+                state.quantity[payload.newStatus] = state.quantity[payload.newStatus] + 1 || 1
+                if (todo.status === 'deleted') {
+                    state.quantity.all += 1
+                }
+                if (payload.newStatus === 'deleted') {
+                    state.quantity.all -= 1
+                }
+                state.isFetching = false
+            } else {
+                state.isFetching = false
+                state.error = payload.error
             }
-            if (payload.newStatus === 'deleted') {
-                state.quantity.all -= 1
-            }
-            todo.oldStatus = todo.status
-            todo.status = payload.newStatus
-            state.quantity[todo.oldStatus] -= 1
-            state.quantity[payload.newStatus] = state.quantity[payload.newStatus] + 1 || 1
-            state.isFetching = false
+
+
         },
         // [deleteTodo.pending]: (state) => {
         //     state.isFetching = true

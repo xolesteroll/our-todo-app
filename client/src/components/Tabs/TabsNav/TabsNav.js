@@ -11,7 +11,6 @@ const TabsNav = () => {
     const [navItemsData, setNavItemsData] = useState([])
 
     const params = useParams()
-    console.log(params)
 
     useEffect(() => {
         const navItemsArray = [

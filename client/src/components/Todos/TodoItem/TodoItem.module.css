@@ -5,30 +5,28 @@
     padding: 10px;
 }
 
-.listItem:hover .actionBtn{
-    display: block;
-}
-
-.actionBtn {
+.listItemControls {
     display: none;
     position: absolute;
-    cursor: pointer;
-    border: none;
-    border-radius: 2px;
-    color: #ffffff;
-    top: 50%;
-    right: 5px;
-    transform: translateY(-50%);
-    width: fit-content;
-    height: 80%;
+    bottom: 10px;
+    right: 10px;
 }
 
-.actionBtn.restoreBtn {
-    background-color: green;
+.listItem:hover .listItemControls{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
 }
 
-.actionBtn.deleteBtn {
-    background-color: red;
+.listItemTitle {
+    font-size: 25px;
+    margin: 10px 0;
+}
+
+.listItemDescription {
+    font-size: 20px;
+    color: #494949;
 }
 
 .statusControls {
@@ -46,4 +44,15 @@
 
 .statusBar {
     padding: 2px 5px;
+}
+
+.timeCounter {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.listItemPrompt {
+    font-size: 14px;
+    color: #cccccc;
 }

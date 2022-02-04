@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
 import formatDate from "../../../../helpers/formatDateForInputValueHelper";
+import {todosActions} from "../../../../store/slices/todosSlice";
 
 import c from './AddTodoForm.module.css'
 import MyButton from "../../../UI/MyButton/MyButton";
+import {useDispatch} from "react-redux";
 
 const AddTodoForm = ({onAddTodoHandler}) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [finishDate, setFinishDate] = useState(formatDate(new Date().toLocaleDateString()))
+
+    const dispatch = useDispatch()
 
     const onTitleChangeHandler = (e) => {
         const text = e.target.value
@@ -16,21 +20,28 @@ const AddTodoForm = ({onAddTodoHandler}) => {
 
     const onDescriptionChangeHandler = (e) => {
         const descr = e.target.value
-        console.log(descr)
         setDescription(descr)
     }
     const onFinishDateChangeHandler = (e) => {
         const date = e.target.value
-        console.log(date)
+
         setFinishDate(date)
     }
 
     const onSubmitHandler = (e) => {
         e.preventDefault()
-        onAddTodoHandler({
-            title,
-            description,
-        })
+        const formattedFinishDate = new Date(finishDate).getTime()
+        console.log(formattedFinishDate, new Date().getTime())
+        console.log(formattedFinishDate <= new Date().getTime())
+        if (formattedFinishDate <= new Date().getTime()) {
+            dispatch(todosActions.setTodosError("You can only pick future dates, right?=)"))
+        } else {
+            onAddTodoHandler({
+                title,
+                description,
+                finishDate: formattedFinishDate.toString()
+            })
+        }
         setTitle('')
         setDescription('')
         setFinishDate(formatDate(new Date().toLocaleDateString()))
